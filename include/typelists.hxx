@@ -1,5 +1,5 @@
-#ifndef PITYPELISTS_TYPELIST_HXX
-#define PITYPELISTS_TYPELIST_HXX
+#ifndef PITYPELISTS_TYPELISTS_HXX
+#define PITYPELISTS_TYPELISTS_HXX
 
 #include <tl_constants.hxx>
 #include <tl_find.hxx>
@@ -40,7 +40,7 @@ namespace pi::tl
      * @returns The 0-based index of SearchedType in TypeList, respecting the matching Strategy.
      */
     template <matching Strategy, typename SearchedType, typename ...TypeList>
-    auto constexpr index_of()
+    auto constexpr find()
     {
         return internal::find<apply_strategy_t<Strategy, SearchedType>, apply_strategy_t<Strategy, TypeList>...>();
     }
@@ -52,9 +52,9 @@ namespace pi::tl
      * @returns The 0-based index of SearchedType in TypeList, using the relaxed matching strategy.
      */
     template <typename SearchedType, typename ...TypeList>
-    auto constexpr index_of()
+    auto constexpr find()
     {
-        return index_of<matching::relaxed, SearchedType, TypeList...>();
+        return find<matching::relaxed, SearchedType, TypeList...>();
     }
 }
 

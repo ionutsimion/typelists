@@ -1,6 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include <typelist.hxx>
+#include <typelists.hxx>
 using namespace pi::tl;
 
 SCENARIO("count with strict matching strategy")

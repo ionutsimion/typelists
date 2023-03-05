@@ -1,25 +1,25 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include <typelist.hxx>
+#include <typelists.hxx>
 using namespace pi::tl;
 
-SCENARIO("index_of with strict matching strategy")
+SCENARIO("find with strict matching strategy")
 {
     GIVEN("a type, e.g. int, and a type list with the same type with or without modifiers")
     {
         THEN("'int' is found in {int} at index 0")
         {
-            REQUIRE(index_of<matching::strict, int, int>() == 0);
+            REQUIRE(find<matching::strict, int, int>() == 0);
         }
 
         THEN("'int' is not found in {int const}")
         {
-            REQUIRE(index_of<matching::strict, int, int const>() == npos);
+            REQUIRE(find<matching::strict, int, int const>() == npos);
         }
 
         THEN("'int' is not found in {int volatile}")
         {
-            REQUIRE(index_of<matching::strict, int, int volatile>() == npos);
+            REQUIRE(find<matching::strict, int, int volatile>() == npos);
         }
     }
 
@@ -27,17 +27,17 @@ SCENARIO("index_of with strict matching strategy")
     {
         THEN("'int' is not found in {int &}")
         {
-            REQUIRE(index_of<matching::strict, int, int &>() == npos);
+            REQUIRE(find<matching::strict, int, int &>() == npos);
         }
 
         THEN("'int' is not found in {int const &}")
         {
-            REQUIRE(index_of<matching::strict, int, int const &>() == npos);
+            REQUIRE(find<matching::strict, int, int const &>() == npos);
         }
 
         THEN("'int' is not found in {int &&}")
         {
-            REQUIRE(index_of<matching::strict, int, int &&>() == npos);
+            REQUIRE(find<matching::strict, int, int &&>() == npos);
         }
     }
 
@@ -45,17 +45,17 @@ SCENARIO("index_of with strict matching strategy")
     {
         THEN("'double const' is not found in {double}")
         {
-            REQUIRE(index_of<matching::strict, double const, double>() == npos);
+            REQUIRE(find<matching::strict, double const, double>() == npos);
         }
 
         THEN("'double const' is found in {double const} at index 0")
         {
-            REQUIRE(index_of<matching::strict, double const, double const>() == 0);
+            REQUIRE(find<matching::strict, double const, double const>() == 0);
         }
 
         THEN("'double const' is not found in {double volatile}")
         {
-            REQUIRE(index_of<matching::strict, double const, double volatile>() == npos);
+            REQUIRE(find<matching::strict, double const, double volatile>() == npos);
         }
     }
 
@@ -63,17 +63,17 @@ SCENARIO("index_of with strict matching strategy")
     {
         THEN("'double const' is not found in {double &}")
         {
-            REQUIRE(index_of<matching::strict, double const, double &>() == npos);
+            REQUIRE(find<matching::strict, double const, double &>() == npos);
         }
 
         THEN("'double const' is not found in {double const &}")
         {
-            REQUIRE(index_of<matching::strict, double const, double const &>() == npos);
+            REQUIRE(find<matching::strict, double const, double const &>() == npos);
         }
 
         THEN("'double const' is not found in {double &&}")
         {
-            REQUIRE(index_of<matching::strict, double const, double &&>() == npos);
+            REQUIRE(find<matching::strict, double const, double &&>() == npos);
         }
     }
 
@@ -81,17 +81,17 @@ SCENARIO("index_of with strict matching strategy")
     {
         THEN("'bool volatile' is not found in {bool}")
         {
-            REQUIRE(index_of<matching::strict, bool volatile, bool>() == npos);
+            REQUIRE(find<matching::strict, bool volatile, bool>() == npos);
         }
 
         THEN("'bool volatile' is not found in {bool const}")
         {
-            REQUIRE(index_of<matching::strict, bool volatile, bool const>() == npos);
+            REQUIRE(find<matching::strict, bool volatile, bool const>() == npos);
         }
 
         THEN("'bool volatile' is found in {bool volatile} at index 0")
         {
-            REQUIRE(index_of<matching::strict, bool volatile, bool volatile>() == 0);
+            REQUIRE(find<matching::strict, bool volatile, bool volatile>() == 0);
         }
     }
 
@@ -99,17 +99,17 @@ SCENARIO("index_of with strict matching strategy")
     {
         THEN("'bool volatile' is not found in {bool &}")
         {
-            REQUIRE(index_of<matching::strict, bool volatile, bool &>() == npos);
+            REQUIRE(find<matching::strict, bool volatile, bool &>() == npos);
         }
 
         THEN("'bool volatile' is not found in {bool const &}")
         {
-            REQUIRE(index_of<matching::strict, bool volatile, bool const &>() == npos);
+            REQUIRE(find<matching::strict, bool volatile, bool const &>() == npos);
         }
 
         THEN("'bool volatile' is not found in {bool &&}")
         {
-            REQUIRE(index_of<matching::strict, bool volatile, bool &&>() == npos);
+            REQUIRE(find<matching::strict, bool volatile, bool &&>() == npos);
         }
     }
 
@@ -117,17 +117,17 @@ SCENARIO("index_of with strict matching strategy")
     {
         THEN("'std::string &' is not found in {std::string}")
         {
-            REQUIRE(index_of<matching::strict, std::string &, std::string>() == npos);
+            REQUIRE(find<matching::strict, std::string &, std::string>() == npos);
         }
 
         THEN("'std::string &' is not found in {std::string const}")
         {
-            REQUIRE(index_of<matching::strict, std::string &, std::string const>() == npos);
+            REQUIRE(find<matching::strict, std::string &, std::string const>() == npos);
         }
 
         THEN("'std::string &' is not found in {std::string volatile}")
         {
-            REQUIRE(index_of<matching::strict, std::string &, std::string volatile>() == npos);
+            REQUIRE(find<matching::strict, std::string &, std::string volatile>() == npos);
         }
     }
 
@@ -135,17 +135,17 @@ SCENARIO("index_of with strict matching strategy")
     {
         THEN("'std::string &' is found in {std::string &} at index 0")
         {
-            REQUIRE(index_of<matching::strict, std::string &, std::string &>() == 0);
+            REQUIRE(find<matching::strict, std::string &, std::string &>() == 0);
         }
 
         THEN("'std::string const &' is not found in {std::string const &}")
         {
-            REQUIRE(index_of<matching::strict, std::string &, std::string const &>() == npos);
+            REQUIRE(find<matching::strict, std::string &, std::string const &>() == npos);
         }
 
         THEN("'std::string const &' is not found in {std::string &&}")
         {
-            REQUIRE(index_of<matching::strict, std::string &, std::string &&>() == npos);
+            REQUIRE(find<matching::strict, std::string &, std::string &&>() == npos);
         }
     }
 
@@ -153,17 +153,17 @@ SCENARIO("index_of with strict matching strategy")
     {
         THEN("'int const &' is not found in {int}")
         {
-            REQUIRE(index_of<matching::strict, int const &, int>() == npos);
+            REQUIRE(find<matching::strict, int const &, int>() == npos);
         }
 
         THEN("'int const &' is not found in {int const}")
         {
-            REQUIRE(index_of<matching::strict, int const &, int const>() == npos);
+            REQUIRE(find<matching::strict, int const &, int const>() == npos);
         }
 
         THEN("'int const &' is not found in {int volatile}")
         {
-            REQUIRE(index_of<matching::strict, int const &, int volatile>() == npos);
+            REQUIRE(find<matching::strict, int const &, int volatile>() == npos);
         }
     }
 
@@ -171,17 +171,17 @@ SCENARIO("index_of with strict matching strategy")
     {
         THEN("'int const &' is not found in {int &}")
         {
-            REQUIRE(index_of<matching::strict, int const &, int &>() == npos);
+            REQUIRE(find<matching::strict, int const &, int &>() == npos);
         }
 
         THEN("'int const &' is found in {int const &} at index 0")
         {
-            REQUIRE(index_of<matching::strict, int const &, int const &>() == 0);
+            REQUIRE(find<matching::strict, int const &, int const &>() == 0);
         }
 
         THEN("'int const &' is not found in {int &&}")
         {
-            REQUIRE(index_of<matching::strict, int const &, int &&>() == npos);
+            REQUIRE(find<matching::strict, int const &, int &&>() == npos);
         }
     }
 
@@ -189,17 +189,17 @@ SCENARIO("index_of with strict matching strategy")
     {
         THEN("'int &&' is not found in {int}")
         {
-            REQUIRE(index_of<matching::strict, int &&, int>() == npos);
+            REQUIRE(find<matching::strict, int &&, int>() == npos);
         }
 
         THEN("'int &&' is not found in {int const}")
         {
-            REQUIRE(index_of<matching::strict, int &&, int const>() == npos);
+            REQUIRE(find<matching::strict, int &&, int const>() == npos);
         }
 
         THEN("'int &&' is not found in {int volatile}")
         {
-            REQUIRE(index_of<matching::strict, int &&, int volatile>() == npos);
+            REQUIRE(find<matching::strict, int &&, int volatile>() == npos);
         }
     }
 
@@ -207,17 +207,17 @@ SCENARIO("index_of with strict matching strategy")
     {
         THEN("'int &&' is not found in {int &}")
         {
-            REQUIRE(index_of<matching::strict, int &&, int &>() == npos);
+            REQUIRE(find<matching::strict, int &&, int &>() == npos);
         }
 
         THEN("'int &&' is not found in {int const &&}")
         {
-            REQUIRE(index_of<matching::strict, int &&, int const &>() == npos);
+            REQUIRE(find<matching::strict, int &&, int const &>() == npos);
         }
 
         THEN("'int &&' is found in {int &&} at index 0")
         {
-            REQUIRE(index_of<matching::strict, int &&, int &&>() == 0);
+            REQUIRE(find<matching::strict, int &&, int &&>() == 0);
         }
     }
 
@@ -225,22 +225,22 @@ SCENARIO("index_of with strict matching strategy")
     {
         THEN("'int' is found in {float, int} at index 1")
         {
-            REQUIRE(index_of<matching::strict, int, float, int>() == 1);
+            REQUIRE(find<matching::strict, int, float, int>() == 1);
         }
 
         THEN("'int' is found in {float, char, int} at index 2")
         {
-            REQUIRE(index_of<matching::strict, int, float, char, int>() == 2);
+            REQUIRE(find<matching::strict, int, float, char, int>() == 2);
         }
 
         THEN("'int' is found in {int const, int volatile, int &, int, int const &, int &&, int *} at index 3")
         {
-            REQUIRE(index_of<matching::strict, int, int const, int volatile, int &, int, int const &, int &&, int *>() == 3);
+            REQUIRE(find<matching::strict, int, int const, int volatile, int &, int, int const &, int &&, int *>() == 3);
         }
 
         THEN("'int' is found in {int const, int volatile, int &, int const &, int &&, int *, int} at index 6")
         {
-            REQUIRE(index_of<matching::strict, int, int const, int volatile, int &, int const &, int &&, int *, int>() == 6);
+            REQUIRE(find<matching::strict, int, int const, int volatile, int &, int const &, int &&, int *, int>() == 6);
         }
     }
 
@@ -248,38 +248,38 @@ SCENARIO("index_of with strict matching strategy")
     {
         THEN("'int' is not found in {unsigned}")
         {
-            REQUIRE(index_of<matching::strict, int, unsigned>() == npos);
+            REQUIRE(find<matching::strict, int, unsigned>() == npos);
         }
 
         THEN("'int' is not found in {bool}")
         {
-            REQUIRE(index_of<matching::strict, int, bool>() == npos);
+            REQUIRE(find<matching::strict, int, bool>() == npos);
         }
 
         THEN("'int' is not found in {unsigned char, double, float, std::string, void, std::nullptr_t}")
         {
-            REQUIRE(index_of<matching::strict, int, unsigned char, double, float, std::string, void, std::nullptr_t>() == npos);
+            REQUIRE(find<matching::strict, int, unsigned char, double, float, std::string, void, std::nullptr_t>() == npos);
         }
     }
 }
 
-SCENARIO("index_of with strict relaxed strategy")
+SCENARIO("find with strict relaxed strategy")
 {
     GIVEN("a type, e.g. int, and a type list with the same type with or without modifiers")
     {
         THEN("'int' is found in {int} at index 0")
         {
-            REQUIRE(index_of<int, int>() == 0);
+            REQUIRE(find<int, int>() == 0);
         }
 
         THEN("'int' is found in {int const} at index 0")
         {
-            REQUIRE(index_of<int, int const>() == 0);
+            REQUIRE(find<int, int const>() == 0);
         }
 
         THEN("'int' is not found in {int volatile} at index 0")
         {
-            REQUIRE(index_of<int, int volatile>() == 0);
+            REQUIRE(find<int, int volatile>() == 0);
         }
     }
 
@@ -287,17 +287,17 @@ SCENARIO("index_of with strict relaxed strategy")
     {
         THEN("'int' is found in {int &} at index 0")
         {
-            REQUIRE(index_of<int, int &>() == 0);
+            REQUIRE(find<int, int &>() == 0);
         }
 
         THEN("'int' is found in {int const &} at index 0")
         {
-            REQUIRE(index_of<int, int const &>() == 0);
+            REQUIRE(find<int, int const &>() == 0);
         }
 
         THEN("'int' is found in {int &&} at index 0")
         {
-            REQUIRE(index_of<int, int &&>() == 0);
+            REQUIRE(find<int, int &&>() == 0);
         }
     }
 }
