@@ -25,7 +25,7 @@ namespace pi::tl::internal
             if (Nth == 1)
                 return int64_t{ 0 };
             else
-                return find_no_assert<SearchedType, Nth - 1, Tail...>();
+                return 1 + find_no_assert<SearchedType, Nth - 1, Tail...>();
         }
 
         return int64_t{ 1 } + find_no_assert<SearchedType, Nth, Tail...>();

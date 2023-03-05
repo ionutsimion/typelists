@@ -301,3 +301,34 @@ SCENARIO("find with strict relaxed strategy")
         }
     }
 }
+
+SCENARIO("find with nth appearance")
+{
+    GIVEN("a type, e.g. int, and a list of types, int appearing at least twice")
+    {
+        THEN("3rd 'int' is not found in {int, int}")
+        {
+            REQUIRE(find<int, 3, int, int>() == npos);
+        }
+
+        THEN("3rd 'int' is not found int {int, unsigned, int, bool}")
+        {
+            REQUIRE(find<int, 3, int, unsigned, int, bool>() == npos);
+        }
+
+        THEN("2nd 'int' is found in {int, int} at index 1")
+        {
+            REQUIRE(find<int, 2, int, int>() == 1);
+        }
+
+        THEN("2nd 'int' is found in {int, bool, unsigned, int} at index 3")
+        {
+            REQUIRE(find<int, 2, int, bool, unsigned, int>() == 3);
+        }
+
+        THEN("2nd 'int' is found in {int, const int, int &, int &&, int const &, int *, int} at index 6 with strict matching")
+        {
+            REQUIRE(find<matching::strict, int, 2, int, const int, int &, int &&, int const &, int *, int>() == 6);
+        }
+    }
+}

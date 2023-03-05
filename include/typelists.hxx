@@ -64,7 +64,7 @@ namespace pi::tl
     template<typename SearchedType, int64_t Nth, typename ...TypeList>
     auto constexpr find()
     {
-        return find<SearchedType, Nth, TypeList...>();
+        return find<matching::relaxed, SearchedType, Nth, TypeList...>();
     }
 
     template <matching Strategy, typename SearchedType, typename ...TypeList>
