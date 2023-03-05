@@ -9,36 +9,62 @@ namespace pi::tl
 {
     /*!
      * @brief Counts the number of times SearchedType appears in the TypeList.
-     * @tparam [Optional] Strategy The matching strategy; default is relaxed
+     * @tparam Strategy The matching strategy
      * @tparam SearchedType Type to count
      * @tparam TypeList Where to look in for SearchedType
      * @returns The number of times SearchedType appears in TypeList, respecting the matching Strategy.
      */
     template <matching Strategy, typename SearchedType, typename ...TypeList>
-    auto constexpr count();
-
-    template <typename SearchedType, typename ...TypeList>
-    auto constexpr count();
+    [[nodiscard]] auto constexpr count();
 
     /*!
-     * @brief Index of a SearchedType in TypeList.
-     * @tparam [Optional] Strategy The matching strategy; default is relaxed
+     * @brief Counts the number of times SearchedType appears in the TypeList, using the relaxed matching strategy.
      * @tparam SearchedType Type to count
-     * @tparam [Optional] Nth The nth SearchedType in the TypeList; default is 1 (the first appearance)
+     * @tparam TypeList Where to look in for SearchedType
+     * @returns The number of times SearchedType appears in TypeList.
+     */
+    template <typename SearchedType, typename ...TypeList>
+    [[nodiscard]] auto constexpr count();
+
+    /*!
+     * @brief Find the index of the Nth SearchedType in TypeList.
+     * @tparam Strategy The matching strategy; default is relaxed
+     * @tparam SearchedType Type to count
+     * @tparam Nth The nth SearchedType in the TypeList
      * @tparam TypeList Where to look in for SearchedType
      * @returns The 0-based index of SearchedType in TypeList, respecting the matching Strategy.
      */
     template<matching Strategy, typename SearchedType, int64_t Nth, typename ...TypeList>
-    auto constexpr find();
+    [[nodiscard]] auto constexpr find();
 
+    /*!
+     * @brief Find the index of the Nth SearchedType in TypeList, using relaxed matching strategy.
+     * @tparam SearchedType Type to count
+     * @tparam Nth The nth SearchedType in the TypeList
+     * @tparam TypeList Where to look in for SearchedType
+     * @returns The 0-based index of SearchedType in TypeList, respecting the matching Strategy.
+     */
     template<typename SearchedType, int64_t Nth, typename ...TypeList>
-    auto constexpr find();
+    [[nodiscard]] auto constexpr find();
 
+    /*!
+     * @brief Find the index of the first SearchedType in TypeList.
+     * @tparam Strategy The matching strategy
+     * @tparam SearchedType Type to count
+     * @tparam TypeList Where to look in for SearchedType
+     * @returns The 0-based index of SearchedType in TypeList, respecting the matching Strategy.
+     */
     template <matching Strategy, typename SearchedType, typename ...TypeList>
-    auto constexpr find();
+    [[nodiscard]] auto constexpr find();
 
+    /*!
+     * @brief Find the index of the first SearchedType in TypeList, using relaxed matching strategy.
+     * @tparam SearchedType Type to count
+     * @tparam TypeList Where to look in for SearchedType
+     * @returns The 0-based index of SearchedType in TypeList, respecting the matching Strategy.
+     */
     template <typename SearchedType, typename ...TypeList>
-    auto constexpr find();
+    [[nodiscard]] auto constexpr find();
 }
 
 namespace pi::tl
