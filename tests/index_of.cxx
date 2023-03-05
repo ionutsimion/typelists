@@ -3,250 +3,301 @@
 #include <typelist.hxx>
 using namespace pi::tl;
 
-SCENARIO("index_of with strict matching strategy and a type list with one type")
+SCENARIO("index_of with strict matching strategy")
 {
-    GIVEN("a type, e.g. int, it is found only when checked against int")
+    GIVEN("a type, e.g. int, and a type list with the same type with or without modifiers")
     {
-        THEN("index_of<matching::strict, int, int>() returns 0")
+        THEN("'int' is found in {int} at index 0")
         {
             REQUIRE(index_of<matching::strict, int, int>() == 0);
         }
 
-        THEN("index_of<matching::strict, int, int const>() returns npos")
+        THEN("'int' is not found in {int const}")
         {
             REQUIRE(index_of<matching::strict, int, int const>() == npos);
         }
 
-        THEN("index_of<matching::strict, int, int volatile>() returns npos")
+        THEN("'int' is not found in {int volatile}")
         {
             REQUIRE(index_of<matching::strict, int, int volatile>() == npos);
         }
+    }
 
-        THEN("index_of<matching::strict, int, int &>() returns npos")
+    GIVEN("a type, e.g. int, and a type list with a reference to the same type")
+    {
+        THEN("'int' is not found in {int &}")
         {
             REQUIRE(index_of<matching::strict, int, int &>() == npos);
         }
 
-        THEN("index_of<matching::strict, int, int const &>() returns() npos")
+        THEN("'int' is not found in {int const &}")
         {
             REQUIRE(index_of<matching::strict, int, int const &>() == npos);
         }
 
-        THEN("index_of<matching::strict, int, int &&>() returns npos")
+        THEN("'int' is not found in {int &&}")
         {
             REQUIRE(index_of<matching::strict, int, int &&>() == npos);
         }
     }
 
-    GIVEN("a type, e.g. double const, it is found only when checked against double const")
+    GIVEN("a type, e.g. double const, and a type list with the same type with or without modifiers")
     {
-        THEN("index_of<matching::strict, double const, double>() returns npos")
+        THEN("'double const' is not found in {double}")
         {
             REQUIRE(index_of<matching::strict, double const, double>() == npos);
         }
 
-        THEN("index_of<matching::strict, double const, double const>() returns 0")
+        THEN("'double const' is found in {double const} at index 0")
         {
             REQUIRE(index_of<matching::strict, double const, double const>() == 0);
         }
 
-        THEN("index_of<matching::strict, double const, double volatile>() returns npos")
+        THEN("'double const' is not found in {double volatile}")
         {
             REQUIRE(index_of<matching::strict, double const, double volatile>() == npos);
         }
+    }
 
-        THEN("index_of<matching::strict, double const, double &>() returns npos")
+    GIVEN("a type, e.g. double const, and a type list with a reference to the same type")
+    {
+        THEN("'double const' is not found in {double &}")
         {
             REQUIRE(index_of<matching::strict, double const, double &>() == npos);
         }
 
-        THEN("index_of<matching::strict, double const, double const &>() returns npos")
+        THEN("'double const' is not found in {double const &}")
         {
             REQUIRE(index_of<matching::strict, double const, double const &>() == npos);
         }
 
-        THEN("index_of<matching::strict, double const, double &&>() returns npos")
+        THEN("'double const' is not found in {double &&}")
         {
             REQUIRE(index_of<matching::strict, double const, double &&>() == npos);
         }
     }
 
-    GIVEN("a type, e.g. bool volatile, it is found only when checked against bool volatile")
+    GIVEN("a type, e.g. bool volatile, and a type list with the same type with or without modifiers")
     {
-        THEN("index_of<matching::strict, bool volatile, bool>() returns npos")
+        THEN("'bool volatile' is not found in {bool}")
         {
             REQUIRE(index_of<matching::strict, bool volatile, bool>() == npos);
         }
 
-        THEN("index_of<matching::strict, bool volatile, bool const>() returns npos")
+        THEN("'bool volatile' is not found in {bool const}")
         {
             REQUIRE(index_of<matching::strict, bool volatile, bool const>() == npos);
         }
 
-        THEN("index_of<matching::strict, bool volatile, bool volatile>() == 0")
+        THEN("'bool volatile' is found in {bool volatile} at index 0")
         {
             REQUIRE(index_of<matching::strict, bool volatile, bool volatile>() == 0);
         }
+    }
 
-        THEN("index_of<matching::strict, bool volatile, bool &>() returns npos")
+    GIVEN("a type, e.g. bool volatile, and a type list with a reference to the same type")
+    {
+        THEN("'bool volatile' is not found in {bool &}")
         {
             REQUIRE(index_of<matching::strict, bool volatile, bool &>() == npos);
         }
 
-        THEN("index_of<matching::strict, bool volatile, bool const &>() returns npos")
+        THEN("'bool volatile' is not found in {bool const &}")
         {
             REQUIRE(index_of<matching::strict, bool volatile, bool const &>() == npos);
         }
 
-        THEN("index_of<matching::strict, bool volatile, bool &&>() returns npos")
+        THEN("'bool volatile' is not found in {bool &&}")
         {
             REQUIRE(index_of<matching::strict, bool volatile, bool &&>() == npos);
         }
     }
 
-    GIVEN("a l-reference to a type, e.g. std::string, it is found only when checked against std::string &")
+    GIVEN("a l-reference to a type, e.g. std::string, and a type list with the same type with or without modifiers")
     {
-        THEN("index_of<matching::strict, std::string &, std::string>() returns npos")
+        THEN("'std::string &' is not found in {std::string}")
         {
             REQUIRE(index_of<matching::strict, std::string &, std::string>() == npos);
         }
 
-        THEN("index_of<matching::strict, std::string &, std::string const>() returns npos")
+        THEN("'std::string &' is not found in {std::string const}")
         {
             REQUIRE(index_of<matching::strict, std::string &, std::string const>() == npos);
         }
 
-        THEN("index_of<matching::strict, std::string &, std::string volatile>() returns npos")
+        THEN("'std::string &' is not found in {std::string volatile}")
         {
             REQUIRE(index_of<matching::strict, std::string &, std::string volatile>() == npos);
         }
+    }
 
-        THEN("index_of<matching::strict, std::string &, std::string &>() == 0")
+    GIVEN("a l-reference to a type, e.g. std::string &, and a type list with a reference to the same type")
+    {
+        THEN("'std::string &' is found in {std::string &} at index 0")
         {
             REQUIRE(index_of<matching::strict, std::string &, std::string &>() == 0);
         }
 
-        THEN("index_of<matching::strict, std::string &, std::string const &>() returns npos")
+        THEN("'std::string const &' is not found in {std::string const &}")
         {
             REQUIRE(index_of<matching::strict, std::string &, std::string const &>() == npos);
         }
 
-        THEN("index_of<matching::strict, std::string &, std::string &&>() returns npos")
+        THEN("'std::string const &' is not found in {std::string &&}")
         {
             REQUIRE(index_of<matching::strict, std::string &, std::string &&>() == npos);
         }
     }
 
-    GIVEN("a l-reference to a constant type, eg. int const &, it is found only when checked against int const &")
+    GIVEN("a l-reference to a constant type, eg. int const &, and a type list with the same type with or without modifiers")
     {
-        THEN("index_of<matching::strict, int const &, int>() returns npos")
+        THEN("'int const &' is not found in {int}")
         {
             REQUIRE(index_of<matching::strict, int const &, int>() == npos);
         }
 
-        THEN("index_of<matching::strict, int const &, int const>() returns npos")
+        THEN("'int const &' is not found in {int const}")
         {
             REQUIRE(index_of<matching::strict, int const &, int const>() == npos);
         }
 
-        THEN("index_of<matching::strict, int const &, int volatile>() returns npos")
+        THEN("'int const &' is not found in {int volatile}")
         {
             REQUIRE(index_of<matching::strict, int const &, int volatile>() == npos);
         }
+    }
 
-        THEN("index_of<matching::strict, int const &, int &>() returns npos")
+    GIVEN("a l-reference to a constant type, eg. int const &, and a type list with a reference to the same type")
+    {
+        THEN("'int const &' is not found in {int &}")
         {
             REQUIRE(index_of<matching::strict, int const &, int &>() == npos);
         }
 
-        THEN("index_of<matching::strict, int const &, int const &>() == 0")
+        THEN("'int const &' is found in {int const &} at index 0")
         {
             REQUIRE(index_of<matching::strict, int const &, int const &>() == 0);
         }
 
-        THEN("index_of<matching::strict, int const &, int &&>() returns npos")
+        THEN("'int const &' is not found in {int &&}")
         {
             REQUIRE(index_of<matching::strict, int const &, int &&>() == npos);
         }
     }
 
-    GIVEN("a r-reference to a type, eg. int &&, it is found only when checked against int &&")
+    GIVEN("a r-reference to a type, eg. int &&, and a type list with the same type with or without modifiers")
     {
-        THEN("index_of<matching::strict, int &&, int>() returns npos")
+        THEN("'int &&' is not found in {int}")
         {
             REQUIRE(index_of<matching::strict, int &&, int>() == npos);
         }
 
-        THEN("index_of<matching::strict, int &&, int const>() returns npos")
+        THEN("'int &&' is not found in {int const}")
         {
             REQUIRE(index_of<matching::strict, int &&, int const>() == npos);
         }
 
-        THEN("index_of<matching::strict, int &&, int volatile>() returns npos")
+        THEN("'int &&' is not found in {int volatile}")
         {
             REQUIRE(index_of<matching::strict, int &&, int volatile>() == npos);
         }
+    }
 
-        THEN("index_of<matching::strict, int &&, int &>() returns npos")
+    GIVEN("a r-reference to a type, eg. int &&, and a type list with a reference to the same type")
+    {
+        THEN("'int &&' is not found in {int &}")
         {
             REQUIRE(index_of<matching::strict, int &&, int &>() == npos);
         }
 
-        THEN("index_of<matching::strict, int &&, int const &>() returns npos")
+        THEN("'int &&' is not found in {int const &&}")
         {
             REQUIRE(index_of<matching::strict, int &&, int const &>() == npos);
         }
 
-        THEN("index_of<matching::strict, int &&, int &&>() == 0")
+        THEN("'int &&' is found in {int &&} at index 0")
         {
             REQUIRE(index_of<matching::strict, int &&, int &&>() == 0);
         }
     }
 
-    GIVEN("a type, e.g. int, it is not found when checked against other types")
+    GIVEN("a type, e.g. int, and a type list with at least one type, int being one of them")
     {
-        THEN("index_of<matching::strict, int, unsigned>() returns npos")
-        {
-            REQUIRE(index_of<matching::strict, int, unsigned>() == npos);
-        }
-
-        THEN("index_of<matching::strict, int, bool>() returns npos")
-        {
-            REQUIRE(index_of<matching::strict, int, bool>() == npos);
-        }
-    }
-}
-
-SCENARIO("index_of with strict matching strategy and a type list with more than one type")
-{
-    GIVEN("a type, e.g. int, it is not found when it is not in the type list")
-    {
-        THEN("index_of<matching::strict, int, unsigned, flat, std::string>() returns npos")
-        {
-            REQUIRE(index_of<matching::strict, int, unsigned, float, std::string>() == npos);
-        }
-    }
-
-    GIVEN("a type, e.g. int, it is found at the correct 0-based index in the type list")
-    {
-        THEN("index_of<matching::strict, int, float, int>() returns 1")
+        THEN("'int' is found in {float, int} at index 1")
         {
             REQUIRE(index_of<matching::strict, int, float, int>() == 1);
         }
 
-        THEN("index_of<matching::strict, int, float, char, int>() returns 2")
+        THEN("'int' is found in {float, char, int} at index 2")
         {
             REQUIRE(index_of<matching::strict, int, float, char, int>() == 2);
         }
 
-        THEN("index_of<matching::strict, int, int const, int volatile, int &, int, int const &, int &&, int *>() returns 3")
+        THEN("'int' is found in {int const, int volatile, int &, int, int const &, int &&, int *} at index 3")
         {
             REQUIRE(index_of<matching::strict, int, int const, int volatile, int &, int, int const &, int &&, int *>() == 3);
         }
 
-        THEN("index_of<matching::strict, int, int const, int volatile, int &, int const &, int &&, int *, int>() returns 6")
+        THEN("'int' is found in {int const, int volatile, int &, int const &, int &&, int *, int} at index 6")
         {
             REQUIRE(index_of<matching::strict, int, int const, int volatile, int &, int const &, int &&, int *, int>() == 6);
+        }
+    }
+
+    GIVEN("a type, e.g. int, and a type list without the same type in it")
+    {
+        THEN("'int' is not found in {unsigned}")
+        {
+            REQUIRE(index_of<matching::strict, int, unsigned>() == npos);
+        }
+
+        THEN("'int' is not found in {bool}")
+        {
+            REQUIRE(index_of<matching::strict, int, bool>() == npos);
+        }
+
+        THEN("'int' is not found in {unsigned char, double, float, std::string, void, std::nullptr_t}")
+        {
+            REQUIRE(index_of<matching::strict, int, unsigned char, double, float, std::string, void, std::nullptr_t>() == npos);
+        }
+    }
+}
+
+SCENARIO("index_of with strict relaxed strategy")
+{
+    GIVEN("a type, e.g. int, and a type list with the same type with or without modifiers")
+    {
+        THEN("'int' is found in {int} at index 0")
+        {
+            REQUIRE(index_of<int, int>() == 0);
+        }
+
+        THEN("'int' is found in {int const} at index 0")
+        {
+            REQUIRE(index_of<int, int const>() == 0);
+        }
+
+        THEN("'int' is not found in {int volatile} at index 0")
+        {
+            REQUIRE(index_of<int, int volatile>() == 0);
+        }
+    }
+
+    GIVEN("a type, e.g. int, and a type list with a reference to the same type")
+    {
+        THEN("'int' is found in {int &} at index 0")
+        {
+            REQUIRE(index_of<int, int &>() == 0);
+        }
+
+        THEN("'int' is found in {int const &} at index 0")
+        {
+            REQUIRE(index_of<int, int const &>() == 0);
+        }
+
+        THEN("'int' is found in {int &&} at index 0")
+        {
+            REQUIRE(index_of<int, int &&>() == 0);
         }
     }
 }
