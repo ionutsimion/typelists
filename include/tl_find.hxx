@@ -8,30 +8,36 @@
 
 namespace pi::tl::internal
 {
-    template<typename SearchedType, typename Head, typename ...Tail>
+    template<typename SearchedType, int64_t Nth>
     auto constexpr find_no_assert()
     {
-        using result_t = decltype(npos);
+        return int64_t{ 0 };
+    }
 
-        if constexpr (count<SearchedType, Head, Tail...>() == 0U)
+    template<typename SearchedType, int64_t Nth, typename Head, typename ...Tail>
+    auto constexpr find_no_assert()
+    {
+        if constexpr (count<SearchedType, Head, Tail...>() < Nth)
             return npos;
 
         if constexpr (std::is_same_v<SearchedType, Head>)
-            return result_t{ 0 };
+        {
+            if (Nth == 1)
+                return int64_t{ 0 };
+            else
+                return find_no_assert<SearchedType, Nth - 1, Tail...>();
+        }
 
-        if constexpr (sizeof...(Tail) > 0U)
-            return result_t{ 1 } + find_no_assert<SearchedType, Tail...>();
-        else
-            return result_t{ 1 };
+        return int64_t{ 1 } + find_no_assert<SearchedType, Nth, Tail...>();
     }
 
-    template <typename SearchedType, typename ...TypeList>
+    template <typename SearchedType, int64_t Nth, typename ...TypeList>
     auto constexpr find()
     {
         static_assert(sizeof...(TypeList) > 0U, "TypeList is expected to have at least on type.");
-        static_assert(count<SearchedType, TypeList...>() <= 1U, "SearchedType found more than once in the TypeList. Please use find_nth() function instead.");
+        static_assert(Nth > 0, "Nth is a 1-based index representing which 'instance' of SearchedType you want to find.");
 
-        return find_no_assert<SearchedType, TypeList...>();
+        return find_no_assert<SearchedType, Nth, TypeList...>();
     }
 }
 
