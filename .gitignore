@@ -35,6 +35,7 @@
 cmake-build*
 
 # CLion specific files
-.idea
+/.idea
 /.vs
 /out/build/x64-Debug
+/Folder.DotSettings.user
