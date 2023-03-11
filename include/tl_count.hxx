@@ -4,7 +4,7 @@
 namespace pi::tl::internal
 {
     template<typename SearchedType, typename Head, typename ...Tail>
-    auto constexpr count()
+    auto consteval count()
     {
         return (static_cast<size_t>(std::is_same_v<SearchedType, Head>) + ... + static_cast<size_t>(std::is_same_v<SearchedType, Tail>));
     }
