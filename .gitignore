@@ -36,3 +36,5 @@ cmake-build*
 
 # CLion specific files
 .idea
+/.vs
+/out/build/x64-Debug
