@@ -2,6 +2,7 @@
 #define PITYPELISTS_TYPELISTS_HXX
 
 #include <tl_constants.hxx>
+#include <tl_get.hxx>
 #include <tl_find.hxx>
 #include <tl_matching_strategy.hxx>
 
@@ -65,6 +66,9 @@ namespace pi::tl
      */
     template <typename SearchedType, typename ...TypeList>
     [[nodiscard]] auto consteval find();
+
+    template <typename SearchedType, matching Strategy, typename ...TypeList>
+    [[nodiscard]] decltype(auto) constexpr get([[maybe_unused]] TypeList &&...arguments);
 }
 
 namespace pi::tl
@@ -103,6 +107,12 @@ namespace pi::tl
     auto consteval find()
     {
         return find<matching::relaxed, SearchedType, 1, TypeList...>();
+    }
+
+    template <typename SearchedType, matching Strategy, typename ...TypeList>
+    [[nodiscard]] decltype(auto) constexpr get([[maybe_unused]] TypeList &&...arguments)
+    {
+        return internal::get<apply_strategy_t<Strategy, SearchedType>, apply_strategy_t<Strategy, TypeList>...>(std::forward<TypeList>(arguments)...);
     }
 }
 
