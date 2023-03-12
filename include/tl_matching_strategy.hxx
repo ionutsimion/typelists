@@ -13,7 +13,7 @@ namespace pi::tl
     };
 
     template <matching Strategy, typename Type>
-    using apply_strategy_t = std::conditional_t<Strategy == matching::relaxed, std::decay_t<Type>, Type>;
+    using apply_strategy_t = std::conditional_t<Strategy == matching::strict, Type, std::decay_t<Type>>;
 }
 
 #endif

@@ -5,30 +5,28 @@ using namespace pi::tl;
 
 namespace
 {
-    template <typename SearchedType, matching strategy, typename ...TypeList>
+    template <size_t I, typename ...TypeList>
     decltype(auto) test_get_argument_of_type([[maybe_unused]] TypeList &&...arguments)
     {
-        return get<SearchedType, strategy>(std::forward<TypeList>(arguments)...);
+        return get<I>(std::forward<TypeList>(arguments)...);
     }
 }
 
-SCENARIO("get with strict matching strategy")
+SCENARIO("get")
 {
-    GIVEN("a type list with at least one type and")
+    GIVEN("a type list with N arguments, N >= 1")
     {
-        THEN("get<SearchedType> returns the first left or right reference to SearchedType argument")
+        THEN("get<0> returns the first argument")
         {
-            using namespace std::string_literals;
+            REQUIRE(test_get_argument_of_type<0>(1, 2, 3, 4) == 1);
+            REQUIRE(test_get_argument_of_type<0>(true, 2.1, 3.1, '4') == true);
+        }
 
-            auto const an_int{ 1 };
-            auto another_int{ 2 };
-            auto another_int_for_reference{ 3 };
-            auto const &a_const_reference_to_int{ another_int_for_reference };
-            auto a_std_string{ "a std::string"s };
-
-            REQUIRE(test_get_argument_of_type<int, matching::strict>(4, a_const_reference_to_int, another_int, a_std_string) == 4);
-            REQUIRE(test_get_argument_of_type<int const &, matching::strict>(an_int, a_const_reference_to_int, another_int, a_std_string) == an_int);
-            REQUIRE(test_get_argument_of_type<std::string, matching::strict>(an_int, a_const_reference_to_int, another_int, "a std::string"s) == a_std_string);
+        THEN("get<N-1> returns the last argument")
+        {
+            REQUIRE(test_get_argument_of_type<0>(1) == 1);
+            REQUIRE(test_get_argument_of_type<1>(true, '4') == '4');
+            REQUIRE(test_get_argument_of_type<4>(10, 20, 30, 40, 50) == 50);
         }
     }
 }

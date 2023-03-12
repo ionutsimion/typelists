@@ -67,7 +67,14 @@ namespace pi::tl
     template <typename SearchedType, typename ...TypeList>
     [[nodiscard]] auto consteval find();
 
-    template <typename SearchedType, matching Strategy, typename ...TypeList>
+    /*!
+     * @brief Get the argument at index I in TypeList.
+     * @tparam I 0-based index
+     * @tparam TypeList List of types
+     * @param arguments List of arguments
+     * @return The argument at index I in the arguments list.
+     */
+    template <size_t I, typename ...TypeList>
     [[nodiscard]] decltype(auto) constexpr get([[maybe_unused]] TypeList &&...arguments);
 }
 
@@ -109,10 +116,10 @@ namespace pi::tl
         return find<matching::relaxed, SearchedType, 1, TypeList...>();
     }
 
-    template <typename SearchedType, matching Strategy, typename ...TypeList>
+    template <size_t I, typename ...TypeList>
     [[nodiscard]] decltype(auto) constexpr get([[maybe_unused]] TypeList &&...arguments)
     {
-        return internal::get<apply_strategy_t<Strategy, SearchedType>, apply_strategy_t<Strategy, TypeList>...>(std::forward<TypeList>(arguments)...);
+        return internal::get<I, TypeList...>(std::forward<TypeList>(arguments)...);
     }
 }
 

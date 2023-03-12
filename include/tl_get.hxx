@@ -8,22 +8,22 @@
 
 namespace pi::tl::internal
 {
-    template <typename SearchedType, typename Head, typename ...Tail>
+    template <size_t I, typename Head, typename ...Tail>
     [[nodiscard]] decltype(auto) constexpr get_no_assert(Head &&first, [[maybe_unused]] Tail &&...rest)
     {
-        if constexpr (std::is_same_v<SearchedType, Head>)
+        if constexpr (I == 0)
             return std::forward<Head>(first);
         else
-            return get_no_assert<SearchedType, Tail...>(std::forward<Tail>(rest)...);
+            return get_no_assert<I - 1U, Tail...>(std::forward<Tail>(rest)...);
     }
 
-    template <typename SearchedType, typename ...TypeList>
+    template <size_t I, typename ...TypeList>
     [[nodiscard]] decltype(auto) constexpr get([[maybe_unused]] TypeList &&...arguments)
     {
-        static_assert(sizeof...(TypeList) > 0U, "TypeList is expected to have at least on type.");
-        static_assert(count<SearchedType, TypeList...>() >= 1U, "There is no argument of type SearchedType.");
+        static_assert(sizeof...(TypeList), "TypeList is expected to have at least on type.");
+        static_assert(I < sizeof...(TypeList), "Index out of bounds.");
 
-        return get_no_assert<SearchedType, TypeList...>(std::forward<TypeList>(arguments)...);
+        return get_no_assert<I, TypeList...>(std::forward<TypeList>(arguments)...);
     }
 }
 
