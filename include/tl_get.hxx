@@ -25,6 +25,12 @@ namespace pi::tl::internal
 
         return get_no_assert<I, TypeList...>(std::forward<TypeList>(arguments)...);
     }
+
+    template <typename SearchedType, typename ...TypeList>
+    [[nodiscard]] auto constexpr get_or_initialize([[maybe_unused]] SearchedType default_value, [[maybe_unused]] TypeList &&...arguments)
+    {
+        return default_value;
+    }
 }
 
 #endif

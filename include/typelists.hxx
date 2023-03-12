@@ -76,6 +76,9 @@ namespace pi::tl
      */
     template <size_t I, typename ...TypeList>
     [[nodiscard]] decltype(auto) constexpr get([[maybe_unused]] TypeList &&...arguments);
+
+    template <matching Strategy, typename SearchedType, typename ...TypeList>
+    [[nodiscard]] auto constexpr get_or_initialize([[maybe_unused]] SearchedType default_value, [[maybe_unused]] TypeList &&...arguments);
 }
 
 namespace pi::tl
@@ -120,6 +123,14 @@ namespace pi::tl
     [[nodiscard]] decltype(auto) constexpr get([[maybe_unused]] TypeList &&...arguments)
     {
         return internal::get<I, TypeList...>(std::forward<TypeList>(arguments)...);
+    }
+
+    template <matching Strategy, typename SearchedType, typename ...TypeList>
+    [[nodiscard]] auto constexpr get_or_initialize([[maybe_unused]] SearchedType default_value, [[maybe_unused]] TypeList &&...arguments)
+    {
+        return internal::get_or_initialize<apply_strategy_t<Strategy, SearchedType>, apply_strategy_t<Strategy, TypeList>...>(
+            apply_strategy_t<Strategy, SearchedType>(default_value)
+           , std::forward<apply_strategy_t<Strategy, TypeList>>(arguments)...);
     }
 }
 
