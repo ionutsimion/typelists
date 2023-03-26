@@ -29,7 +29,10 @@ namespace pi::tl::internal
     template <typename SearchedType, typename ...TypeList>
     [[nodiscard]] auto constexpr get_or_initialize([[maybe_unused]] SearchedType default_value, [[maybe_unused]] TypeList &&...arguments)
     {
-        return default_value;
+        if constexpr (auto constexpr index = find<SearchedType, 1ULL, TypeList...>(); index == -1LL)
+            return default_value;
+        else
+            return get<index, TypeList...>(std::forward<TypeList &&>(arguments)...);
     }
 }
 

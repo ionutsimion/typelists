@@ -77,7 +77,27 @@ namespace pi::tl
     template <size_t I, typename ...TypeList>
     [[nodiscard]] decltype(auto) constexpr get([[maybe_unused]] TypeList &&...arguments);
 
+    /*!
+     * @brief Get the first argument of a certain type or the given default value, respecting the matching strategy.
+     * @tparam Strategy The matching strategy
+     * @tparam SearchedType Type of the expected argument
+     * @tparam TypeList List of types
+     * @param default_value The fall-back initialization value in case there is no matching argument
+     * @param arguments List of arguments
+     * @return The first argument of the same type, respecting the matching strategy, or the default value.
+     */
     template <matching Strategy, typename SearchedType, typename ...TypeList>
+    [[nodiscard]] auto constexpr get_or_initialize([[maybe_unused]] SearchedType default_value, [[maybe_unused]] TypeList &&...arguments);
+
+    /*!
+     * @brief Get the first argument of a certain type or the given default value, using relaxed strategy.
+     * @tparam SearchedType Type of the expected argument
+     * @tparam TypeList List of types
+     * @param default_value The fall-back initialization value in case there is no matching argument
+     * @param arguments List of arguments
+     * @return The first argument of the same type or the default value.
+     */
+    template <typename SearchedType, typename ...TypeList>
     [[nodiscard]] auto constexpr get_or_initialize([[maybe_unused]] SearchedType default_value, [[maybe_unused]] TypeList &&...arguments);
 }
 
@@ -130,7 +150,14 @@ namespace pi::tl
     {
         return internal::get_or_initialize<apply_strategy_t<Strategy, SearchedType>, apply_strategy_t<Strategy, TypeList>...>(
             apply_strategy_t<Strategy, SearchedType>(default_value)
-           , std::forward<apply_strategy_t<Strategy, TypeList>>(arguments)...);
+          , apply_strategy_t<Strategy, TypeList>(arguments)...);
+    }
+
+    template <typename SearchedType, typename ...TypeList>
+    [[nodiscard]] auto constexpr get_or_initialize([[maybe_unused]] SearchedType default_value, [[maybe_unused]] TypeList &&...arguments)
+    {
+        return get_or_initialize<matching::relaxed, SearchedType, TypeList...>(std::forward<SearchedType>(default_value)
+          , std::forward<TypeList>(arguments)...);
     }
 }
 
