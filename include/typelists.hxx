@@ -75,7 +75,7 @@ namespace pi::tl
      * @return The argument at index I in the arguments list.
      */
     template <size_t I, typename ...TypeList>
-    [[nodiscard]] decltype(auto) constexpr get([[maybe_unused]] TypeList &&...arguments);
+    [[nodiscard]] decltype(auto) constexpr get(TypeList &&...arguments);
 
     /*!
      * @brief Get the first argument of a certain type or the given default value, respecting the matching strategy.
@@ -87,7 +87,7 @@ namespace pi::tl
      * @return The first argument of the same type, respecting the matching strategy, or the default value.
      */
     template <matching Strategy, typename SearchedType, typename ...TypeList>
-    [[nodiscard]] auto constexpr get_or_initialize([[maybe_unused]] SearchedType default_value, [[maybe_unused]] TypeList &&...arguments);
+    [[nodiscard]] auto constexpr get_or_initialize(SearchedType default_value, TypeList &&...arguments);
 
     /*!
      * @brief Get the first argument of a certain type or the given default value, using relaxed strategy.
@@ -98,7 +98,7 @@ namespace pi::tl
      * @return The first argument of the same type or the default value.
      */
     template <typename SearchedType, typename ...TypeList>
-    [[nodiscard]] auto constexpr get_or_initialize([[maybe_unused]] SearchedType default_value, [[maybe_unused]] TypeList &&...arguments);
+    [[nodiscard]] auto constexpr get_or_initialize(SearchedType default_value, TypeList &&...arguments);
 }
 
 namespace pi::tl
@@ -140,13 +140,13 @@ namespace pi::tl
     }
 
     template <size_t I, typename ...TypeList>
-    [[nodiscard]] decltype(auto) constexpr get([[maybe_unused]] TypeList &&...arguments)
+    [[nodiscard]] decltype(auto) constexpr get(TypeList &&...arguments)
     {
         return internal::get<I, TypeList...>(std::forward<TypeList>(arguments)...);
     }
 
     template <matching Strategy, typename SearchedType, typename ...TypeList>
-    [[nodiscard]] auto constexpr get_or_initialize([[maybe_unused]] SearchedType default_value, [[maybe_unused]] TypeList &&...arguments)
+    [[nodiscard]] auto constexpr get_or_initialize(SearchedType default_value, TypeList &&...arguments)
     {
         return internal::get_or_initialize<apply_strategy_t<Strategy, SearchedType>, apply_strategy_t<Strategy, TypeList>...>(
             apply_strategy_t<Strategy, SearchedType>(default_value)
@@ -154,7 +154,7 @@ namespace pi::tl
     }
 
     template <typename SearchedType, typename ...TypeList>
-    [[nodiscard]] auto constexpr get_or_initialize([[maybe_unused]] SearchedType default_value, [[maybe_unused]] TypeList &&...arguments)
+    [[nodiscard]] auto constexpr get_or_initialize(SearchedType default_value, TypeList &&...arguments)
     {
         return get_or_initialize<matching::relaxed, SearchedType, TypeList...>(std::forward<SearchedType>(default_value)
           , std::forward<TypeList>(arguments)...);

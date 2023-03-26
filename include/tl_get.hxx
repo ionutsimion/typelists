@@ -18,7 +18,7 @@ namespace pi::tl::internal
     }
 
     template <size_t I, typename ...TypeList>
-    [[nodiscard]] decltype(auto) constexpr get([[maybe_unused]] TypeList &&...arguments)
+    [[nodiscard]] decltype(auto) constexpr get(TypeList &&...arguments)
     {
         static_assert(sizeof...(TypeList), "TypeList is expected to have at least on type.");
         static_assert(I < sizeof...(TypeList), "Index out of bounds.");
