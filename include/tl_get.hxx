@@ -30,11 +30,14 @@ namespace pi::tl::internal
     {
         if constexpr (sizeof...(TypeList) == 0ULL)
             return default_value;
-
-        if constexpr (auto constexpr index = find<SearchedType, I, TypeList...>(); index == -1LL)
-            return default_value;
         else
-            return get<index, TypeList...>(std::forward<TypeList &&>(arguments)...);
+        {
+            auto constexpr index = find<SearchedType, I, TypeList...>();
+            if constexpr (index == npos)
+                return default_value;
+            else
+                return get<index, TypeList...>(std::forward<TypeList&&>(arguments)...);
+        }
     }
 }
 
