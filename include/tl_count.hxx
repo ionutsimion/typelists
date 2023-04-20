@@ -3,6 +3,12 @@
 
 namespace pi::tl::internal
 {
+    template <typename SearchedType>
+    auto consteval count()
+    {
+        return 0ULL;
+    }
+
     template<typename SearchedType, typename Head, typename ...Tail>
     auto consteval count()
     {

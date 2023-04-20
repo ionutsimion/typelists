@@ -3,6 +3,20 @@
 #include <typelists.hxx>
 using namespace pi::tl;
 
+SCENARIO("find with empty type list")
+{
+    GIVEN("any type and an empty type list")
+    {
+        THEN("the giver type is never found")
+        {
+            REQUIRE(find<void>() == npos);
+            REQUIRE(find<int>() == npos);
+            REQUIRE(find<std::string>() == npos);
+            REQUIRE(find<struct X>() == npos);
+        }
+    }
+}
+
 SCENARIO("find with strict matching strategy")
 {
     GIVEN("a type, e.g. int, and a type list with the same type with or without modifiers")

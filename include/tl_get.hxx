@@ -20,16 +20,18 @@ namespace pi::tl::internal
     template <size_t I, typename ...TypeList>
     [[nodiscard]] decltype(auto) constexpr get(TypeList &&...arguments)
     {
-        static_assert(sizeof...(TypeList), "TypeList is expected to have at least on type.");
         static_assert(I < sizeof...(TypeList), "Index out of bounds.");
 
         return get_no_assert<I, TypeList...>(std::forward<TypeList>(arguments)...);
     }
 
-    template <typename SearchedType, typename ...TypeList>
+    template <size_t I, typename SearchedType, typename ...TypeList>
     [[nodiscard]] auto constexpr get_or_initialize([[maybe_unused]] SearchedType default_value, [[maybe_unused]] TypeList &&...arguments)
     {
-        if constexpr (auto constexpr index = find<SearchedType, 1ULL, TypeList...>(); index == -1LL)
+        if constexpr (sizeof...(TypeList) == 0ULL)
+            return default_value;
+
+        if constexpr (auto constexpr index = find<SearchedType, I, TypeList...>(); index == -1LL)
             return default_value;
         else
             return get<index, TypeList...>(std::forward<TypeList &&>(arguments)...);

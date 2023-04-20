@@ -3,6 +3,20 @@
 #include <typelists.hxx>
 using namespace pi::tl;
 
+SCENARIO("count with empty type list")
+{
+    GIVEN("any type and an empty type list")
+    {
+        THEN("count always returns 0")
+        {
+            REQUIRE(count<void>() == 0U);
+            REQUIRE(count<int>() == 0U);
+            REQUIRE(count<std::string>() == 0U);
+            REQUIRE(count<struct X>() == 0U);
+        }
+    }
+}
+
 SCENARIO("count with strict matching strategy")
 {
     GIVEN("a type, e.g. bool, and a list with other types")

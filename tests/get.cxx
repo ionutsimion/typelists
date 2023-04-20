@@ -1,19 +1,15 @@
 #include <catch2/catch_test_macros.hpp>
 
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
+using namespace Catch::Matchers;
+
 #include <typelists.hxx>
 using namespace pi::tl;
 
+#include <toolbox.hxx>
+
 namespace
 {
-    template <typename Type> auto constexpr zero = Type{};
-    template <typename Type> auto constexpr one = Type{ 1 };
-
-    template <std::floating_point Type>
-    auto constexpr almost_equal(Type a, Type b)
-    {
-        return std::abs(std::abs(a) - std::abs(b)) <= std::numeric_limits<Type>::epsilon();
-    }
-
     template <size_t I, typename ...TypeList>
     [[nodiscard]] decltype(auto) test_get(TypeList &&...arguments)
     {
@@ -64,11 +60,11 @@ SCENARIO("get_or_initialize with strict matching strategy")
             REQUIRE(test_get_or_initialize<matching::strict>(""s, s) == ""s);
         }
 
-        THEN("returns the first argument of the same type, not the default")
+        THEN("returns the first argument of the exact same type, not the default")
         {
             auto const i1 = 1;
             REQUIRE(test_get_or_initialize<matching::strict>(1, i1, 3, 4) == 3);
-            REQUIRE(almost_equal(test_get_or_initialize<matching::strict>(0.0, 0, 0.5f, 1.0), 1.0));
+            REQUIRE_THAT(test_get_or_initialize<matching::strict>(0.0, 0, 0.5f, 1.0), WithinAbs(1.0, epsilon<double>));
             using namespace std::string_literals;
             REQUIRE(test_get_or_initialize<matching::strict>(""s, "string"s) == "string"s);
         }
@@ -81,7 +77,7 @@ SCENARIO("get_or_initialize with relaxed matching strategy")
     {
         THEN("returns the default value if there is no argument of the same type")
         {
-            REQUIRE(almost_equal(test_get_or_initialize<matching::relaxed, double>(zero<int>, 1, 2.0f), 0.0));
+            REQUIRE_THAT(test_get_or_initialize<matching::relaxed>(zero<double>, 1, 2.0f), WithinAbs(0.0, epsilon<double>));
             REQUIRE(test_get_or_initialize<matching::relaxed>(0, 'c') == 0);
         }
 

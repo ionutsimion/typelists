@@ -34,10 +34,12 @@ namespace pi::tl::internal
     template <typename SearchedType, size_t Nth, typename ...TypeList>
     auto consteval find()
     {
-        static_assert(sizeof...(TypeList) > 0U, "TypeList is expected to have at least on type.");
         static_assert(Nth > 0U, "Nth is a 1-based index representing which 'instance' of SearchedType you want to search for.");
 
-        return find_no_assert<SearchedType, Nth, TypeList...>();
+        if constexpr (sizeof...(TypeList) == 0ULL)
+            return npos;
+        else
+            return find_no_assert<SearchedType, Nth, TypeList...>();
     }
 }
 

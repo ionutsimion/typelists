@@ -28,9 +28,9 @@ else()
     target_compile_options(PiTypeLists INTERFACE -Werror -Wall -Wextra -pedantic)
 endif()
 
-add_executable(tests tests/main.cxx tests/main.cxx tests/find.cxx tests/count.cxx tests/get.cxx)
+add_executable(tests tests/main.cxx tests/main.cxx tests/find.cxx tests/count.cxx tests/get.cxx tests/sandbox.cxx tests/toolbox.hxx)
 target_link_libraries(tests PRIVATE PiTypeLists Catch2::Catch2)
-target_include_directories(tests PRIVATE ${Catch2_INCLUDE_DIRS})
+target_include_directories(tests PRIVATE ${Catch2_INCLUDE_DIRS} tests)
 target_compile_features(tests PRIVATE cxx_std_20)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
