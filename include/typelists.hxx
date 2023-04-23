@@ -31,21 +31,21 @@ namespace pi::tl
      * @brief Find the index of the Nth SearchedType in TypeList.
      * @tparam Strategy The matching strategy; default is relaxed
      * @tparam SearchedType Type to count
-     * @tparam Nth The nth SearchedType in the TypeList
+     * @tparam Nth The 1-based instance of SearchedType in the TypeList
      * @tparam TypeList Where to look in for SearchedType
      * @returns The 0-based index of SearchedType in TypeList, respecting the matching Strategy.
      */
-    template<matching Strategy, typename SearchedType, int64_t Nth, typename ...TypeList>
+    template<matching Strategy, typename SearchedType, size_t Nth, typename ...TypeList>
     [[nodiscard]] auto consteval find_nth();
 
     /*!
      * @brief Find the index of the Nth SearchedType in TypeList, using relaxed matching strategy.
      * @tparam SearchedType Type to count
-     * @tparam Nth The nth SearchedType in the TypeList
+     * @tparam Nth The 1-based instance of SearchedType in the TypeList
      * @tparam TypeList Where to look in for SearchedType
      * @returns The 0-based index of SearchedType in TypeList, respecting the matching Strategy.
      */
-    template<typename SearchedType, int64_t Nth, typename ...TypeList>
+    template<typename SearchedType, size_t Nth, typename ...TypeList>
     [[nodiscard]] auto consteval find_nth();
 
     /*!
@@ -68,13 +68,13 @@ namespace pi::tl
     [[nodiscard]] auto consteval find();
 
     /*!
-     * @brief Get the argument at index I in TypeList.
-     * @tparam I 0-based index
+     * @brief Get the argument at index Index in TypeList.
+     * @tparam Index 0-based index
      * @tparam TypeList List of types
      * @param arguments List of arguments
-     * @return The argument at index I in the arguments list.
+     * @return The argument at index Index in the arguments list.
      */
-    template <size_t I, typename ...TypeList>
+    template<size_t Index, typename ...TypeList>
     [[nodiscard]] decltype(auto) constexpr get(TypeList &&...arguments);
 
     /*!
@@ -87,7 +87,7 @@ namespace pi::tl
      * @param arguments List of arguments
      * @return The first argument of the same type, respecting the matching strategy, or the default value.
      */
-    template <matching Strategy, int64_t Nth, typename SearchedType, typename ...TypeList>
+    template <matching Strategy, size_t Nth, typename SearchedType, typename ...TypeList>
     [[nodiscard]] auto constexpr get_nth_or_initialize(SearchedType default_value, TypeList &&...arguments);
 
     /*!
@@ -99,7 +99,7 @@ namespace pi::tl
      * @param arguments List of arguments
      * @return The first argument of the same type or the default value.
      */
-    template <int64_t Nth, typename SearchedType, typename ...TypeList>
+    template <size_t Nth, typename SearchedType, typename ...TypeList>
     [[nodiscard]] auto constexpr get_nth_or_initialize(SearchedType default_value, TypeList &&...arguments);
 
     /*!
@@ -140,13 +140,13 @@ namespace pi::tl
         return count<matching::relaxed, SearchedType, TypeList...>();
     }
 
-    template<matching Strategy, typename SearchedType, int64_t Nth, typename ...TypeList>
+    template<matching Strategy, typename SearchedType, size_t Nth, typename ...TypeList>
     auto consteval find_nth()
     {
         return internal::find<apply_strategy_t<Strategy, SearchedType>, Nth, apply_strategy_t<Strategy, TypeList>...>();
     }
 
-    template<typename SearchedType, int64_t Nth, typename ...TypeList>
+    template<typename SearchedType, size_t Nth, typename ...TypeList>
     auto consteval find_nth()
     {
         return find_nth<matching::relaxed, SearchedType, Nth, TypeList...>();
@@ -164,13 +164,13 @@ namespace pi::tl
         return find_nth<matching::relaxed, SearchedType, 1, TypeList...>();
     }
 
-    template <size_t I, typename ...TypeList>
+    template<size_t Index, typename ...TypeList>
     [[nodiscard]] decltype(auto) constexpr get(TypeList &&...arguments)
     {
-        return internal::get<I, TypeList...>(std::forward<TypeList>(arguments)...);
+        return internal::get<Index, TypeList...>(std::forward<TypeList>(arguments)...);
     }
 
-    template <matching Strategy, int64_t Nth, typename SearchedType, typename ...TypeList>
+    template <matching Strategy, size_t Nth, typename SearchedType, typename ...TypeList>
     [[nodiscard]] auto constexpr get_nth_or_initialize(SearchedType default_value, TypeList &&...arguments)
     {
         return internal::get_or_initialize<Nth, apply_strategy_t<Strategy, SearchedType>, apply_strategy_t<Strategy, TypeList>...>(
@@ -178,7 +178,7 @@ namespace pi::tl
               , apply_strategy_t<Strategy, TypeList>(arguments)...);
     }
 
-    template <int64_t Nth, typename SearchedType, typename ...TypeList>
+    template <size_t Nth, typename SearchedType, typename ...TypeList>
     [[nodiscard]] auto constexpr get_nth_or_initialize(SearchedType default_value, TypeList &&...arguments)
     {
         return get_nth_or_initialize<matching::relaxed, Nth, SearchedType, TypeList...>(std::forward<SearchedType>(default_value)
