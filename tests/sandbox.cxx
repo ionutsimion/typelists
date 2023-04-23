@@ -32,10 +32,10 @@ namespace
 
         npc_t npc{};
         npc.name = get_or_initialize("Some NPC"s, arguments...);
-        npc.x = get_nth_or_initialize<1>(10.0, arguments...);
+        npc.x = get_nth_or_initialize<1>(10.0, arguments...); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
         npc.y = get_nth_or_initialize<2>(1.0, arguments...);
-        npc.z = get_nth_or_initialize<3>(20.0, arguments...);
-        npc.hp = get_or_initialize(100, arguments...);
+        npc.z = get_nth_or_initialize<3>(20.0, arguments...); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+        npc.hp = get_or_initialize(100, arguments...); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
 
         return npc;
     }
@@ -51,16 +51,16 @@ namespace
 
         npc_t npc{};
         npc.name = get_or_initialize("Some other NPC"s, arguments...);
-        npc.hp = get_or_initialize(200, arguments...);
-        npc.x = get_nth_or_initialize<1>(-10.0, arguments...);
-        npc.y = get_nth_or_initialize<2>(2.0, arguments...);
-        npc.z = get_nth_or_initialize<3>(-20.0, arguments...);
+        npc.hp = get_or_initialize(200, arguments...); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+        npc.x = get_nth_or_initialize<1>(-10.0, arguments...); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+        npc.y = get_nth_or_initialize<2>(2.0, arguments...); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+        npc.z = get_nth_or_initialize<3>(-20.0, arguments...); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
 
         return npc;
     }
 }
 
-SCENARIO("sandbox")
+SCENARIO("sandbox") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("an instance of type NPC and an initialization function")
     {
@@ -68,16 +68,16 @@ SCENARIO("sandbox")
         {
             auto const npc1 = initialize1();
             REQUIRE(npc1.name == "Some NPC"s);
-            REQUIRE_THAT(npc1.x, WithinAbs(10.0, epsilon<double>));
+            REQUIRE_THAT(npc1.x, WithinAbs(10.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc1.y, WithinAbs(1.0, epsilon<double>));
-            REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>));
+            REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc1.hp == 100);
 
             auto const npc2 = initialize2();
             REQUIRE(npc2.name == "Some other NPC"s);
-            REQUIRE_THAT(npc2.x, WithinAbs(-10.0, epsilon<double>));
-            REQUIRE_THAT(npc2.y, WithinAbs(2.0, epsilon<double>));
-            REQUIRE_THAT(npc2.z, WithinAbs(-20.0, epsilon<double>));
+            REQUIRE_THAT(npc2.x, WithinAbs(-10.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(npc2.y, WithinAbs(2.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(npc2.z, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc2.hp == 200);
         }
 
@@ -85,16 +85,16 @@ SCENARIO("sandbox")
         {
             auto const npc1 = initialize1("Batman"s);
             REQUIRE(npc1.name == "Batman"s);
-            REQUIRE_THAT(npc1.x, WithinAbs(10.0, epsilon<double>));
+            REQUIRE_THAT(npc1.x, WithinAbs(10.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc1.y, WithinAbs(1.0, epsilon<double>));
-            REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>));
+            REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc1.hp == 100);
 
             auto const npc2 = initialize2("Superman"s);
             REQUIRE(npc2.name == "Superman"s);
-            REQUIRE_THAT(npc2.x, WithinAbs(-10.0, epsilon<double>));
-            REQUIRE_THAT(npc2.y, WithinAbs(2.0, epsilon<double>));
-            REQUIRE_THAT(npc2.z, WithinAbs(-20.0, epsilon<double>));
+            REQUIRE_THAT(npc2.x, WithinAbs(-10.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(npc2.y, WithinAbs(2.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(npc2.z, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc2.hp == 200);
         }
 
@@ -102,16 +102,16 @@ SCENARIO("sandbox")
         {
             auto const npc1 = initialize1(400);
             REQUIRE(npc1.name == "Some NPC"s);
-            REQUIRE_THAT(npc1.x, WithinAbs(10.0, epsilon<double>));
+            REQUIRE_THAT(npc1.x, WithinAbs(10.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc1.y, WithinAbs(1.0, epsilon<double>));
-            REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>));
+            REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc1.hp == 400);
 
             auto const npc2 = initialize2(1'000'000);
             REQUIRE(npc2.name == "Some other NPC"s);
-            REQUIRE_THAT(npc2.x, WithinAbs(-10.0, epsilon<double>));
-            REQUIRE_THAT(npc2.y, WithinAbs(2.0, epsilon<double>));
-            REQUIRE_THAT(npc2.z, WithinAbs(-20.0, epsilon<double>));
+            REQUIRE_THAT(npc2.x, WithinAbs(-10.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(npc2.y, WithinAbs(2.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(npc2.z, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc2.hp == 1'000'000);
         }
 
@@ -121,14 +121,14 @@ SCENARIO("sandbox")
             REQUIRE(npc1.name == "Some NPC"s);
             REQUIRE_THAT(npc1.x, WithinAbs(100.0, epsilon<double>));
             REQUIRE_THAT(npc1.y, WithinAbs(1.0, epsilon<double>));
-            REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>));
+            REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc1.hp == 100);
 
             auto const npc2 = initialize2(-100.0);
             REQUIRE(npc2.name == "Some other NPC"s);
             REQUIRE_THAT(npc2.x, WithinAbs(-100.0, epsilon<double>));
-            REQUIRE_THAT(npc2.y, WithinAbs(2.0, epsilon<double>));
-            REQUIRE_THAT(npc2.z, WithinAbs(-20.0, epsilon<double>));
+            REQUIRE_THAT(npc2.y, WithinAbs(2.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(npc2.z, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc2.hp == 200);
         }
 
@@ -137,15 +137,15 @@ SCENARIO("sandbox")
             auto const npc1 = initialize1(100.0, 1.5);
             REQUIRE(npc1.name == "Some NPC"s);
             REQUIRE_THAT(npc1.x, WithinAbs(100.0, epsilon<double>));
-            REQUIRE_THAT(npc1.y, WithinAbs(1.5, epsilon<double>));
-            REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>));
+            REQUIRE_THAT(npc1.y, WithinAbs(1.5, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc1.hp == 100);
 
             auto const npc2 = initialize2(-100.0, 100.0);
             REQUIRE(npc2.name == "Some other NPC"s);
             REQUIRE_THAT(npc2.x, WithinAbs(-100.0, epsilon<double>));
             REQUIRE_THAT(npc2.y, WithinAbs(100.0, epsilon<double>));
-            REQUIRE_THAT(npc2.z, WithinAbs(-20.0, epsilon<double>));
+            REQUIRE_THAT(npc2.z, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc2.hp == 200);
         }
 
@@ -154,15 +154,15 @@ SCENARIO("sandbox")
             auto const npc1 = initialize1(100.0, 1.5, 0.1);
             REQUIRE(npc1.name == "Some NPC"s);
             REQUIRE_THAT(npc1.x, WithinAbs(100.0, epsilon<double>));
-            REQUIRE_THAT(npc1.y, WithinAbs(1.5, epsilon<double>));
-            REQUIRE_THAT(npc1.z, WithinAbs(0.1, epsilon<double>));
+            REQUIRE_THAT(npc1.y, WithinAbs(1.5, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(npc1.z, WithinAbs(0.1, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc1.hp == 100);
 
             auto const npc2 = initialize2(-100.0, 100.0, -0.1);
             REQUIRE(npc2.name == "Some other NPC"s);
             REQUIRE_THAT(npc2.x, WithinAbs(-100.0, epsilon<double>));
             REQUIRE_THAT(npc2.y, WithinAbs(100.0, epsilon<double>));
-            REQUIRE_THAT(npc2.z, WithinAbs(-0.1, epsilon<double>));
+            REQUIRE_THAT(npc2.z, WithinAbs(-0.1, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc2.hp == 200);
         }
 
@@ -170,44 +170,44 @@ SCENARIO("sandbox")
         {
             auto const npc1 = initialize1("Batman"s, 400, 1'000.0);
             REQUIRE(npc1.name == "Batman"s);
-            REQUIRE_THAT(npc1.x, WithinAbs(1'000.0, epsilon<double>));
+            REQUIRE_THAT(npc1.x, WithinAbs(1'000.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc1.y, WithinAbs(1.0, epsilon<double>));
-            REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>));
+            REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc1.hp == 400);
 
             auto const npc2 = initialize1("Superman"s, 2'000.0, 1'000'000);
             REQUIRE(npc2.name == "Superman"s);
-            REQUIRE_THAT(npc2.x, WithinAbs(2'000.0, epsilon<double>));
+            REQUIRE_THAT(npc2.x, WithinAbs(2'000.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc2.y, WithinAbs(1.0, epsilon<double>));
-            REQUIRE_THAT(npc2.z, WithinAbs(20.0, epsilon<double>));
+            REQUIRE_THAT(npc2.z, WithinAbs(20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc2.hp == 1'000'000);
 
             auto const npc3 = initialize1(10'000, "Wolverine"s, 3'000.0);
             REQUIRE(npc3.name == "Wolverine"s);
-            REQUIRE_THAT(npc3.x, WithinAbs(3'000.0, epsilon<double>));
+            REQUIRE_THAT(npc3.x, WithinAbs(3'000.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc3.y, WithinAbs(1.0, epsilon<double>));
-            REQUIRE_THAT(npc3.z, WithinAbs(20.0, epsilon<double>));
+            REQUIRE_THAT(npc3.z, WithinAbs(20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc3.hp == 10'000);
 
             auto const npc4 = initialize1(4'000.0, "Iron Man"s, 1'000);
             REQUIRE(npc4.name == "Iron Man"s);
-            REQUIRE_THAT(npc4.x, WithinAbs(4'000.0, epsilon<double>));
+            REQUIRE_THAT(npc4.x, WithinAbs(4'000.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc4.y, WithinAbs(1.0, epsilon<double>));
-            REQUIRE_THAT(npc4.z, WithinAbs(20.0, epsilon<double>));
+            REQUIRE_THAT(npc4.z, WithinAbs(20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc4.hp == 1'000);
 
             auto const npc5 = initialize1(300'000, 5'000.0, "Alien"s);
             REQUIRE(npc5.name == "Alien"s);
-            REQUIRE_THAT(npc5.x, WithinAbs(5'000.0, epsilon<double>));
+            REQUIRE_THAT(npc5.x, WithinAbs(5'000.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc5.y, WithinAbs(1.0, epsilon<double>));
-            REQUIRE_THAT(npc5.z, WithinAbs(20.0, epsilon<double>));
+            REQUIRE_THAT(npc5.z, WithinAbs(20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc5.hp == 300'000);
 
             auto const npc6 = initialize1(6'000.0, 120, "Ripley"s);
             REQUIRE(npc6.name == "Ripley"s);
-            REQUIRE_THAT(npc6.x, WithinAbs(6'000.0, epsilon<double>));
+            REQUIRE_THAT(npc6.x, WithinAbs(6'000.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc6.y, WithinAbs(1.0, epsilon<double>));
-            REQUIRE_THAT(npc6.z, WithinAbs(20.0, epsilon<double>));
+            REQUIRE_THAT(npc6.z, WithinAbs(20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc6.hp == 120);
         }
 

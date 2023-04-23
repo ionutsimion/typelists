@@ -26,14 +26,14 @@ namespace
     }
 }
 
-SCENARIO("get")
+SCENARIO("get") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("a type list with N arguments, N >= 1")
     {
         THEN("get<0> returns the first argument")
         {
             REQUIRE(test_get<0>(1, 2, 3, 4) == 1);
-            REQUIRE(test_get<0>(true, 2.1, 3.1, '4') == true);
+            REQUIRE(test_get<0>(true, 2.1, 3.1, '4') == true); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
         }
 
         THEN("get<N-1> returns the last argument")
@@ -45,7 +45,7 @@ SCENARIO("get")
     }
 }
 
-SCENARIO("get_or_initialize with strict matching strategy")
+SCENARIO("get_or_initialize with strict matching strategy") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("a default value and a list of arguments")
     {
@@ -64,20 +64,20 @@ SCENARIO("get_or_initialize with strict matching strategy")
         {
             auto const i1 = 1;
             REQUIRE(test_get_or_initialize<matching::strict>(1, i1, 3, 4) == 3);
-            REQUIRE_THAT(test_get_or_initialize<matching::strict>(0.0, 0, 0.5f, 1.0), WithinAbs(1.0, epsilon<double>));
+            REQUIRE_THAT(test_get_or_initialize<matching::strict>(0.0, 0, 0.5f, 1.0), WithinAbs(1.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             using namespace std::string_literals;
             REQUIRE(test_get_or_initialize<matching::strict>(""s, "string"s) == "string"s);
         }
     }
 }
 
-SCENARIO("get_or_initialize with relaxed matching strategy")
+SCENARIO("get_or_initialize with relaxed matching strategy") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("a default value and a list of arguments")
     {
         THEN("returns the default value if there is no argument of the same type")
         {
-            REQUIRE_THAT(test_get_or_initialize<matching::relaxed>(zero<double>, 1, 2.0f), WithinAbs(0.0, epsilon<double>));
+            REQUIRE_THAT(test_get_or_initialize<matching::relaxed>(zero<double>, 1, 2.0f), WithinAbs(0.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(test_get_or_initialize<matching::relaxed>(0, 'c') == 0);
         }
 

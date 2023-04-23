@@ -3,7 +3,7 @@
 #include <typelists.hxx>
 using namespace pi::tl;
 
-SCENARIO("find with empty type list")
+SCENARIO("find with empty type list") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("any type and an empty type list")
     {
@@ -17,7 +17,7 @@ SCENARIO("find with empty type list")
     }
 }
 
-SCENARIO("find with strict matching strategy")
+SCENARIO("find with strict matching strategy") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("a type, e.g. int, and a type list with the same type with or without modifiers")
     {
@@ -277,7 +277,7 @@ SCENARIO("find with strict matching strategy")
     }
 }
 
-SCENARIO("find with strict relaxed strategy")
+SCENARIO("find with strict relaxed strategy") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("a type, e.g. int, and a type list with the same type with or without modifiers")
     {
@@ -316,7 +316,7 @@ SCENARIO("find with strict relaxed strategy")
     }
 }
 
-SCENARIO("find_nth")
+SCENARIO("find_nth") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("a type, e.g. int, and a list of types, int appearing at least twice")
     {

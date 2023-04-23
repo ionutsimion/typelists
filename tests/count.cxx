@@ -3,7 +3,7 @@
 #include <typelists.hxx>
 using namespace pi::tl;
 
-SCENARIO("count with empty type list")
+SCENARIO("count with empty type list") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("any type and an empty type list")
     {
@@ -17,7 +17,7 @@ SCENARIO("count with empty type list")
     }
 }
 
-SCENARIO("count with strict matching strategy")
+SCENARIO("count with strict matching strategy") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("a type, e.g. bool, and a list with other types")
     {
@@ -49,32 +49,32 @@ SCENARIO("count with strict matching strategy")
     {
         THEN("'int *' is found once in {int *, int const *, int *const, int const *const, int [], int const []}")
         {
-            REQUIRE(count<matching::strict, int *, int *, int const *, int *const, int const *const, int [], int const []>() == 1U);
+            REQUIRE(count<matching::strict, int *, int *, int const *, int *const, int const *const, int [], int const []>() == 1U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
 
         THEN("'int const *' is found once in {int *, int const *, int *const, int const *const, int [], int const []}")
         {
-            REQUIRE(count<matching::strict, int const *, int *, int const *, int *const, int const *const, int [], int const []>() == 1U);
+            REQUIRE(count<matching::strict, int const *, int *, int const *, int *const, int const *const, int [], int const []>() == 1U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
 
         THEN("'int *const' is found once in {int *, int const *, int *const, int const *const, int [], int const []}")
         {
-            REQUIRE(count<matching::strict, int *const, int *, int const *, int *const, int const *const, int [], int const []>() == 1U);
+            REQUIRE(count<matching::strict, int *const, int *, int const *, int *const, int const *const, int [], int const []>() == 1U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
 
         THEN("'int const *const' is found once in {int *, int const *, int *const, int const *const, int [], int const []}")
         {
-            REQUIRE(count<matching::strict, int const *const, int *, int const *, int *const, int const *const, int [], int const []>() == 1U);
+            REQUIRE(count<matching::strict, int const *const, int *, int const *, int *const, int const *const, int [], int const []>() == 1U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
 
         THEN("'int []' is found once in {int *, int const *, int *const, int const *const, int [], int const []}")
         {
-            REQUIRE(count<matching::strict, int [], int *, int const *, int *const, int const *const, int [], int const []>() == 1U);
+            REQUIRE(count<matching::strict, int [], int *, int const *, int *const, int const *const, int [], int const []>() == 1U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
 
         THEN("'int const []' is found once in {int *, int const *, int *const, int const *const, int [], int const []}")
         {
-            REQUIRE(count<matching::strict, int const [], int *, int const *, int *const, int const *const, int [], int const []>() == 1U);
+            REQUIRE(count<matching::strict, int const [], int *, int const *, int *const, int const *const, int [], int const []>() == 1U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
     }
 
@@ -107,7 +107,7 @@ SCENARIO("count with strict matching strategy")
     }
 }
 
-SCENARIO("count with relaxed matching strategy")
+SCENARIO("count with relaxed matching strategy") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("a type, e.g. bool, and a list with other types")
     {
@@ -129,52 +129,52 @@ SCENARIO("count with relaxed matching strategy")
     {
         THEN("'int *' is found three times in {int *, int *, int *const, int []}")
         {
-            REQUIRE(count<int *, int *, int *const, int []>() == 3U);
+            REQUIRE(count<int *, int *, int *const, int []>() == 3U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
 
         THEN("'int *' is not found in {int const *, int const *const, int const []}")
         {
-            REQUIRE(count<int *, int const *, int const *const, int const []>() == 0U);
+            REQUIRE(count<int *, int const *, int const *const, int const []>() == 0U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
 
         THEN("'int const *' is found three times in {int const *, int const *const, int const []}")
         {
-            REQUIRE(count<int const *, int const *, int const *const, int const []>() == 3U);
+            REQUIRE(count<int const *, int const *, int const *const, int const []>() == 3U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
 
         THEN("'int const *' is not found in {int *, int *const, int []}")
         {
-            REQUIRE(count<int const *, int *, int *const, int []>() == 0U);
+            REQUIRE(count<int const *, int *, int *const, int []>() == 0U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
 
         THEN("'int const *const' is found three times in {int const *, int const *const, int const []}")
         {
-            REQUIRE(count<int const *const, int const *, int const *const, int const []>() == 3U);
+            REQUIRE(count<int const *const, int const *, int const *const, int const []>() == 3U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
 
         THEN("'int const *const' is not found in {int *, int *const, int []}")
         {
-            REQUIRE(count<int const *const, int *, int *const, int []>() == 0U);
+            REQUIRE(count<int const *const, int *, int *const, int []>() == 0U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
 
         THEN("'int []' is found three times in {int *, int *, int *const, int []}")
         {
-            REQUIRE(count<int [], int *, int *const, int []>() == 3U);
+            REQUIRE(count<int [], int *, int *const, int []>() == 3U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
 
         THEN("'int []' is not found three times in {int *, int *, int *const, int []}")
         {
-            REQUIRE(count<int [], int const *, int const *const, int const []>() == 0U);
+            REQUIRE(count<int [], int const *, int const *const, int const []>() == 0U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
 
         THEN("'int const []' is found three times in {int const *, int const *const, int const []}")
         {
-            REQUIRE(count<int const [], int const *, int const *const, int const []>() == 3U);
+            REQUIRE(count<int const [], int const *, int const *const, int const []>() == 3U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
 
         THEN("'int const []' is not found in {int *, int *const, int []}")
         {
-            REQUIRE(count<int const [], int *, int *const, int []>() == 0U);
+            REQUIRE(count<int const [], int *, int *const, int []>() == 0U); // NOLINT(cppcoreguidelines-avoid-c-arrays)
         }
     }
 }
