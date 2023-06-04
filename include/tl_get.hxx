@@ -25,6 +25,30 @@ namespace pi::tl::internal
         return get_no_assert<Index, TypeList...>(std::forward<TypeList>(arguments)...);
     }
 
+    template <typename Type>
+    [[nodiscard, maybe_unused]] decltype(auto) constexpr get_no_throw(size_t const, Type &&argument)
+    {
+        return std::forward<Type>(argument);
+    }
+
+    template <typename Head, typename ...TypeList>
+    [[nodiscard]] decltype(auto) constexpr get_no_throw(size_t const index, Head &&first, TypeList &&...rest)
+    {
+        if (index == 0ULL)
+            return std::forward<Head>(first);
+
+        return get_no_throw(index - 1ULL, std::forward<TypeList>(rest)...);
+    }
+
+    template<typename ...TypeList>
+    [[nodiscard]] decltype(auto) constexpr get_at(size_t const index, TypeList &&...arguments)
+    {
+        if (index >= sizeof...(TypeList))
+            throw std::out_of_range("Index out of bounds");
+
+        return get_no_throw<TypeList...>(index, std::forward<TypeList>(arguments)...);
+    }
+
     template<size_t Nth, typename SearchedType, typename ...TypeList>
     [[nodiscard]] auto constexpr get_or_initialize([[maybe_unused]] SearchedType default_value, [[maybe_unused]] TypeList &&...arguments)
     {
