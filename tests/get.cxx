@@ -129,3 +129,47 @@ SCENARIO("get_or_initialize with relaxed matching strategy") // NOLINT(misc-use-
         }
     }
 }
+
+SCENARIO("get_nth_or_initialize with strict matching strategy (index known at compile time")
+{
+    GIVEN("a scenario")
+    {
+        THEN("write the tests for it")
+        {
+            REQUIRE(true);
+        }
+    }
+}
+
+SCENARIO("get_nth_or_initialize with relaxed matching strategy (index known at compile time")
+{
+    GIVEN("a scenario")
+    {
+        THEN("write the tests for it")
+        {
+            REQUIRE(true);
+        }
+    }
+}
+
+SCENARIO("get_nth_or_initialize with strict matching strategy (index known at run time")
+{
+    GIVEN("a scenario")
+    {
+        THEN("write the tests for it")
+        {
+            REQUIRE(true);
+        }
+    }
+}
+
+SCENARIO("get_nth_or_initialize with relaxed matching strategy (index known at run time")
+{
+    GIVEN("a scenario")
+    {
+        THEN("write the tests for it")
+        {
+            REQUIRE(true);
+        }
+    }
+}

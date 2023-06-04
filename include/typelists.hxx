@@ -196,24 +196,45 @@ namespace pi::tl
               , apply_strategy_t<Strategy, TypeList>(arguments)...);
     }
 
+    template <matching Strategy, typename SearchedType, typename ...TypeList>
+    [[nodiscard]] auto constexpr get_nth_or_initialize(size_t const index, SearchedType default_value, TypeList &&...arguments)
+    {
+        return internal::get_or_initialize<apply_strategy_t<Strategy, SearchedType>, apply_strategy_t<Strategy, TypeList>...>(
+                index
+              , apply_strategy_t<Strategy, SearchedType>(default_value)
+              , apply_strategy_t<Strategy, TypeList>(arguments)...);
+    }
+
     template <size_t Nth, typename SearchedType, typename ...TypeList>
     [[nodiscard]] auto constexpr get_nth_or_initialize(SearchedType default_value, TypeList &&...arguments)
     {
-        return get_nth_or_initialize<matching::relaxed, Nth, SearchedType, TypeList...>(std::forward<SearchedType>(default_value)
-          , std::forward<TypeList>(arguments)...);
+        return get_nth_or_initialize<matching::relaxed, Nth, SearchedType, TypeList...>(
+                std::forward<SearchedType>(default_value)
+              , std::forward<TypeList>(arguments)...);
+    }
+
+    template <typename SearchedType, typename ...TypeList>
+    [[nodiscard]] auto constexpr get_nth_or_initialize(size_t const index, SearchedType default_value, TypeList &&...arguments)
+    {
+        return get_nth_or_initialize<matching::relaxed, SearchedType, TypeList...>(
+                index
+              , std::forward<SearchedType>(default_value)
+              , std::forward<TypeList>(arguments)...);
     }
 
     template <matching Strategy, typename SearchedType, typename ...TypeList>
     [[nodiscard]] auto constexpr get_or_initialize(SearchedType default_value, TypeList &&...arguments) {
-        return get_nth_or_initialize<Strategy, 1LL, SearchedType, TypeList...>(std::forward<SearchedType>(default_value)
-          , std::forward<TypeList>(arguments)...);
+        return get_nth_or_initialize<Strategy, 1LL, SearchedType, TypeList...>(
+                std::forward<SearchedType>(default_value)
+              , std::forward<TypeList>(arguments)...);
     }
 
     template <typename SearchedType, typename ...TypeList>
     [[nodiscard]] auto constexpr get_or_initialize(SearchedType default_value, TypeList &&...arguments)
     {
-        return get_nth_or_initialize<matching::relaxed, 1LL, SearchedType, TypeList...>(std::forward<SearchedType>(default_value)
-          , std::forward<TypeList>(arguments)...);
+        return get_nth_or_initialize<matching::relaxed, 1LL, SearchedType, TypeList...>(
+                std::forward<SearchedType>(default_value)
+              , std::forward<TypeList>(arguments)...);
     }
 }
 
