@@ -17,9 +17,9 @@ namespace
     }
 
     template <typename ...TypeList>
-    [[nodiscard]] decltype(auto) test_get_at(size_t const index, TypeList &&...arguments)
+    [[nodiscard]] decltype(auto) test_get(size_t const index, TypeList &&...arguments)
     {
-        return get_at<TypeList...>(index, std::forward<TypeList>(arguments)...);
+        return get<TypeList...>(index, std::forward<TypeList>(arguments)...);
     }
 
     template <matching Strategy, typename Default, typename ...TypeList>
@@ -51,22 +51,22 @@ SCENARIO("get (index known at compile time)") // NOLINT(misc-use-anonymous-names
     }
 }
 
-SCENARIO("get_at (index known at run time)") // NOLINT(misc-use-anonymous-namespace)
+SCENARIO("get (index known at run time)") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("a type list with N arguments, N >= 1 2")
     {
-        THEN("get_at(M, ...), M >= N throws a out_of_range exception: index out of range")
+        THEN("get(M, ...), M >= N throws a out_of_range exception: index out of range")
         {
-            REQUIRE_THROWS(test_get_at(1ULL, 1ULL));
-            REQUIRE_THROWS(test_get_at(2ULL, 1ULL, 2ULL));
-            REQUIRE_THROWS(test_get_at(1ULL, 1));
-            REQUIRE_THROWS(test_get_at(2ULL, 1));
-            REQUIRE_THROWS(test_get_at(3ULL, 1));
+            REQUIRE_THROWS(test_get<size_t>(1ULL, 1ULL));
+            REQUIRE_THROWS(test_get(2ULL, 1ULL, 2ULL));
+            REQUIRE_THROWS(test_get<int>(1ULL, 1));
+            REQUIRE_THROWS(test_get(2ULL, 1));
+            REQUIRE_THROWS(test_get(3ULL, 1));
         }
-        THEN("get_at(M, ...), M >= N does not throw exceptions")
+        THEN("get(M, ...), M >= N does not throw exceptions")
         {
-            REQUIRE_NOTHROW(test_get_at(0ULL, 1ULL));
-            REQUIRE_NOTHROW(test_get_at(1ULL, 1ULL, 2ULL));
+            REQUIRE_NOTHROW(test_get(0ULL, 1ULL));
+            REQUIRE_NOTHROW(test_get(1ULL, 1ULL, 2ULL));
         }
     }
 }

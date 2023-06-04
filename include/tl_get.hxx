@@ -41,7 +41,7 @@ namespace pi::tl::internal
     }
 
     template<typename ...TypeList>
-    [[nodiscard]] decltype(auto) constexpr get_at(size_t const index, TypeList &&...arguments)
+    [[nodiscard]] decltype(auto) constexpr get(size_t const index, TypeList &&...arguments)
     {
         if (index >= sizeof...(TypeList))
             throw std::out_of_range("Index out of bounds");

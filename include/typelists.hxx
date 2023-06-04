@@ -78,7 +78,7 @@ namespace pi::tl
     [[nodiscard]] decltype(auto) constexpr get(TypeList &&...arguments);
 
     template<typename ...TypeList>
-    [[nodiscard]] decltype(auto) constexpr get_at(size_t index, TypeList &&...arguments);
+    [[nodiscard]] decltype(auto) constexpr get(size_t index, TypeList &&...arguments);
 
     /*!
      * @brief Get the first argument of a certain type or the given default value, respecting the matching strategy.
@@ -174,9 +174,9 @@ namespace pi::tl
     }
 
     template<typename ...TypeList>
-    [[nodiscard]] decltype(auto) constexpr get_at(size_t const index, TypeList &&...arguments)
+    [[nodiscard]] decltype(auto) constexpr get(size_t index, TypeList &&...arguments)
     {
-        return internal::get_at<TypeList...>(index, std::forward<TypeList>(arguments)...);
+        return internal::get<TypeList...>(index, std::forward<TypeList>(arguments)...);
     }
 
     template <matching Strategy, size_t Nth, typename SearchedType, typename ...TypeList>
