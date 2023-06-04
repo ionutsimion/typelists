@@ -69,7 +69,7 @@ namespace pi::tl
 
     /*!
      * @brief Get the argument at index Index in TypeList.
-     * @tparam Index 0-based index
+     * @tparam Index 0-based index (known at compile time)
      * @tparam TypeList List of types
      * @param arguments List of arguments
      * @return The argument at index Index in the arguments list.
@@ -77,6 +77,15 @@ namespace pi::tl
     template<size_t Index, typename ...TypeList>
     [[nodiscard]] decltype(auto) constexpr get(TypeList &&...arguments);
 
+    /*!
+     * @brief Tet the argument at the required index from the given TypeList
+     * @tparam TypeList List of types
+     * @param index 0-based index (not necessarily known at compile-time)
+     * @param arguments List of arguments
+     * @return The argument at the required index from the argument list.
+     * @throws out_of_range if the index is larger than or equal to the number of arguments.
+     * @note Due to a language limitation, the arguments must have compatible types (e.g. int, bool, double, char are allowed, but int, char * are not allowed)
+     */
     template<typename ...TypeList>
     [[nodiscard]] decltype(auto) constexpr get(size_t index, TypeList &&...arguments);
 

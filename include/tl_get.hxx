@@ -34,10 +34,8 @@ namespace pi::tl::internal
     template <typename Head, typename ...TypeList>
     [[nodiscard]] decltype(auto) constexpr get_no_throw(size_t const index, Head &&first, TypeList &&...rest)
     {
-        if (index == 0ULL)
-            return std::forward<Head>(first);
-
-        return get_no_throw(index - 1ULL, std::forward<TypeList>(rest)...);
+        return index == 0ULL ? std::forward<Head>(first)
+                             : get_no_throw(index - 1ULL, std::forward<TypeList>(rest)...);
     }
 
     template<typename ...TypeList>

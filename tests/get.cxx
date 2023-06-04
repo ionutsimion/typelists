@@ -63,10 +63,21 @@ SCENARIO("get (index known at run time)") // NOLINT(misc-use-anonymous-namespace
             REQUIRE_THROWS(test_get(2ULL, 1));
             REQUIRE_THROWS(test_get(3ULL, 1));
         }
+
         THEN("get(M, ...), M >= N does not throw exceptions")
         {
             REQUIRE_NOTHROW(test_get(0ULL, 1ULL));
             REQUIRE_NOTHROW(test_get(1ULL, 1ULL, 2ULL));
+        }
+
+        THEN("get(M, ...), M >= N returns the expected argument")
+        {
+            REQUIRE(test_get(0ULL, 1) == 1);
+            REQUIRE(test_get(0ULL, true, '4') == true);
+            REQUIRE(test_get(1ULL, true, '4') == '4');
+            REQUIRE(test_get(4ULL, 10, 20, 30, 40, 50) == 50);
+            REQUIRE(test_get(1ULL, 10, '2', 30, 40.0, 50) == '2');
+            REQUIRE_THAT(test_get(3ULL, 10, '2', 30, 40.0, 50), WithinAbs(40.0, epsilon<double>));
         }
     }
 }
