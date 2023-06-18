@@ -184,19 +184,32 @@ SCENARIO("get_nth_or_initialize with strict matching strategy (compile time)") /
         }
     }
 }
-/*
+
 SCENARIO("get_nth_or_initialize with relaxed matching strategy (compile time)") // NOLINT(misc-use-anonymous-namespace)
 {
-    GIVEN("a scenario")
+    GIVEN("a default value, a list of arguments and the index 1 (at compile time)")
     {
-        THEN("write the tests for it")
+        THEN("the result is the default value if there is no argument of the same base type as the default")
         {
-            REQUIRE(true);
+            using namespace std::string_literals;
+            REQUIRE(test_get_nth_or_initialize<matching::relaxed, 1ULL>(1, true, '2', "three"s) == 1);
+            REQUIRE(test_get_nth_or_initialize<matching::relaxed, 1ULL>(0.0, 1, '2', 3.0f) == 0.0);
+            REQUIRE(test_get_nth_or_initialize<matching::relaxed, 1ULL>("x"s, 1.0, true) == "x"s);
+        }
+
+        THEN("the result is the first argument of that exact type if there is such an argument")
+        {
+            using namespace std::string_literals;
+            char const c = '2';
+            REQUIRE(test_get_nth_or_initialize<matching::relaxed, 1ULL>('\0', true, c, "three"s) == '2');
+            int const i1 = 1;
+            int const i2 = 2;
+            REQUIRE(test_get_nth_or_initialize<matching::relaxed, 1ULL>(0, "one"s, '1', true, i1, i2) == i1);
         }
     }
 }
-
-SCENARIO("get_nth_or_initialize with strict matching strategy (run time") // NOLINT(misc-use-anonymous-namespace)
+/*
+SCENARIO("get_nth_or_initialize with strict matching strategy (run time)") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("a scenario")
     {
@@ -207,7 +220,7 @@ SCENARIO("get_nth_or_initialize with strict matching strategy (run time") // NOL
     }
 }
 
-SCENARIO("get_nth_or_initialize with relaxed matching strategy (run time") // NOLINT(misc-use-anonymous-namespace)
+SCENARIO("get_nth_or_initialize with relaxed matching strategy (run time)") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("a scenario")
     {
