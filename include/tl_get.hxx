@@ -61,6 +61,18 @@ namespace pi::tl::internal
                 return get<index, TypeList...>(std::forward<TypeList&&>(arguments)...);
         }
     }
+
+    template<typename SearchedType, typename ...TypeList>
+    [[nodiscard]] auto constexpr get_or_initialize(size_t const nth, [[maybe_unused]] SearchedType default_value, [[maybe_unused]] TypeList &&...arguments)
+    {
+        if (nth >= sizeof...(TypeList))
+            return default_value;
+
+        if (nth == 1ULL)
+            return get_or_initialize<1ULL>(default_value, arguments...);
+
+        return default_value;
+    }
 }
 
 #endif
