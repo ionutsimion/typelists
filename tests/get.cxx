@@ -23,12 +23,15 @@ namespace
     }
 
     template <matching Strategy, typename Default, typename ...TypeList>
-    [[nodiscard]] auto test_get_or_initialize(Default default_value, TypeList &&...arguments)
+    [[nodiscard]] auto test_get_or_initialize(Default &&default_value, TypeList &&...arguments)
     {
-        if constexpr (Strategy == pi::tl::matching::strict)
-            return get_or_initialize<Strategy, Default, TypeList...>(default_value, std::forward<TypeList>(arguments)...);
-        else
-            return get_or_initialize<Default, TypeList...>(default_value, std::forward<TypeList>(arguments)...);
+        return get_or_initialize<Strategy, Default, TypeList...>(default_value, std::forward<TypeList>(arguments)...);
+    }
+
+    template <matching Strategy, size_t Nth, typename Default, typename ...TypeList>
+    [[nodiscard]] auto test_get_nth_or_initialize(Default &&default_value, TypeList &&...arguments)
+    {
+        return get_nth_or_initialize<Strategy, Nth, Default, TypeList...>(default_value, std::forward<TypeList>(arguments)...);
     }
 }
 
@@ -86,7 +89,7 @@ SCENARIO("get_or_initialize with strict matching strategy") // NOLINT(misc-use-a
 {
     GIVEN("a default value and a list of arguments")
     {
-        THEN("returns the default value if there is no argument of the exact same type")
+        THEN("get_or_initialize returns the default value if there is no argument of the exact same type")
         {
             REQUIRE(test_get_or_initialize<matching::strict>(false, 1) == false);
             REQUIRE(test_get_or_initialize<matching::strict, int>({}, 1.0, true, '1', "1") == 0);
@@ -97,7 +100,7 @@ SCENARIO("get_or_initialize with strict matching strategy") // NOLINT(misc-use-a
             REQUIRE(test_get_or_initialize<matching::strict>(""s, s) == ""s);
         }
 
-        THEN("returns the first argument of the exact same type, not the default")
+        THEN("get_or_initialize returns the first argument of the exact same type, not the default")
         {
             auto const i1 = 1;
             REQUIRE(test_get_or_initialize<matching::strict>(1, i1, 3, 4) == 3);
@@ -112,13 +115,13 @@ SCENARIO("get_or_initialize with relaxed matching strategy") // NOLINT(misc-use-
 {
     GIVEN("a default value and a list of arguments")
     {
-        THEN("returns the default value if there is no argument of the same type")
+        THEN("get_or_initialize returns the default value if there is no argument of the same type")
         {
             REQUIRE_THAT(test_get_or_initialize<matching::relaxed>(zero<double>, 1, 2.0f), WithinAbs(0.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(test_get_or_initialize<matching::relaxed>(0, 'c') == 0);
         }
 
-        THEN("returns the first argument of the same type, not the default")
+        THEN("get_or_initialize returns the first argument of the same type, not the default")
         {
             REQUIRE(test_get_or_initialize<matching::relaxed>(0, one<int>) == 1);
             auto i1{ 1 };
@@ -130,7 +133,59 @@ SCENARIO("get_or_initialize with relaxed matching strategy") // NOLINT(misc-use-
     }
 }
 
-SCENARIO("get_nth_or_initialize with strict matching strategy (index known at compile time")
+SCENARIO("get_nth_or_initialize with strict matching strategy (compile time)") // NOLINT(misc-use-anonymous-namespace)
+{
+    GIVEN("a default value, a list of arguments and the index 1 (at compile time)")
+    {
+        THEN("the result is the default value if there is no argument of the exactly same type as the default")
+        {
+            using namespace std::string_literals;
+            REQUIRE(test_get_nth_or_initialize<matching::strict, 1ULL>(1, true, '2', "three"s) == 1);
+            int const i1 = 1;
+            int const &i_reference = i1;
+            REQUIRE(test_get_nth_or_initialize<matching::strict, 1ULL>(0, i1, i_reference) == 0);
+        }
+
+        THEN("the result is the first argument of that exact type if there is such an argument")
+        {
+            using namespace std::string_literals;
+            REQUIRE(test_get_nth_or_initialize<matching::strict, 1ULL>('\0', true, '2', "three"s) == '2');
+            int const i_default = 0;
+            int const i1 = 1;
+            int const i2 = 2;
+            REQUIRE(test_get_nth_or_initialize<matching::strict, 1ULL>(i_default, "one"s, '1', true, i1, i2) == i1);
+        }
+    }
+
+    GIVEN("a default value, a list of arguments and an index greater than 1 (at compile time)")
+    {
+        THEN("the result is the default value if there are not enough arguments of the exactly same type")
+        {
+            using namespace std::string_literals;
+            char const c = '1';
+            REQUIRE(test_get_nth_or_initialize<matching::strict, 2ULL>("null"s, true, '2', c, "three"s) == "null"s);
+            int const i_default = 0;
+            int const i1 = 1;
+            int const i2 = 2;
+            int const i3 = 3;
+            REQUIRE(test_get_nth_or_initialize<matching::strict, 4ULL>(i_default, i1, i2, i3) == i_default);
+        }
+
+        THEN("the result is the nth argument of that exact type if there is such an argument")
+        {
+            using namespace std::string_literals;
+            char const c = '1';
+            REQUIRE(test_get_nth_or_initialize<matching::strict, 2ULL>('\0', true, '2', c, "three"s, 'x') == 'x');
+            int const i_default = 0;
+            int const i1 = 1;
+            int const i2 = 2;
+            int const i3 = 3;
+            REQUIRE(test_get_nth_or_initialize<matching::strict, 3ULL>(i_default, "one"s, '1', true, i1, -1, i2, -2, i3) == i3);
+        }
+    }
+}
+/*
+SCENARIO("get_nth_or_initialize with relaxed matching strategy (compile time)") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("a scenario")
     {
@@ -141,7 +196,7 @@ SCENARIO("get_nth_or_initialize with strict matching strategy (index known at co
     }
 }
 
-SCENARIO("get_nth_or_initialize with relaxed matching strategy (index known at compile time")
+SCENARIO("get_nth_or_initialize with strict matching strategy (run time") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("a scenario")
     {
@@ -152,7 +207,7 @@ SCENARIO("get_nth_or_initialize with relaxed matching strategy (index known at c
     }
 }
 
-SCENARIO("get_nth_or_initialize with strict matching strategy (index known at run time")
+SCENARIO("get_nth_or_initialize with relaxed matching strategy (run time") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("a scenario")
     {
@@ -162,14 +217,4 @@ SCENARIO("get_nth_or_initialize with strict matching strategy (index known at ru
         }
     }
 }
-
-SCENARIO("get_nth_or_initialize with relaxed matching strategy (index known at run time")
-{
-    GIVEN("a scenario")
-    {
-        THEN("write the tests for it")
-        {
-            REQUIRE(true);
-        }
-    }
-}
+*/
