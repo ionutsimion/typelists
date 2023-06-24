@@ -82,7 +82,7 @@ SCENARIO("get (index known at run time)") // NOLINT(misc-use-anonymous-namespace
         THEN("get(M, ...), M >= N returns the expected argument")
         {
             REQUIRE(test_get(0ULL, 1) == 1);
-            REQUIRE(test_get(0ULL, true, '4') == true);
+            REQUIRE(test_get(0ULL, true, '4') == static_cast<int>(true));
             REQUIRE(test_get(1ULL, true, '4') == '4');
             REQUIRE(test_get(4ULL, 10, 20, 30, 40, 50) == 50);
             REQUIRE(test_get(1ULL, 10, '2', 30, 40.0, 50) == '2');
@@ -248,21 +248,28 @@ SCENARIO("get_nth_or_initialize with strict matching strategy (run time)") // NO
     {
         THEN("the result is the default value if there is no argument of the same exact type as the default")
         {
-            using namespace std::string_literals;
-            REQUIRE(test_get_nth_or_initialize<matching::strict, int>(1ULL, 1, true, '2', "three"s) == 1);
+            REQUIRE(test_get_nth_or_initialize<matching::strict>(1ULL, 1, true, '2') == 1);
             int const i1 = 1;
             int const &i_reference = i1;
-            REQUIRE(test_get_nth_or_initialize<matching::strict, int>(1ULL, 0, i1, i_reference) == 0);
+            REQUIRE(test_get_nth_or_initialize<matching::strict>(1ULL, 0, i1, i_reference) == 0);
         }
 
         THEN("the result is the first argument of that exact type if there is such an argument")
         {
-            using namespace std::string_literals;
-            REQUIRE(test_get_nth_or_initialize<matching::strict>(1ULL, '\0', true, '2', "three"s) == '2');
+            REQUIRE(test_get_nth_or_initialize<matching::strict>(1ULL, '\0', true, 1.2, '2') == '2');
             int const i_default = 0;
             int const i1 = 1;
             int const i2 = 2;
-            REQUIRE(test_get_nth_or_initialize<matching::strict>(1ULL, i_default, "one"s, '1', true, i1, i2) == i1);
+            REQUIRE(test_get_nth_or_initialize<matching::strict>(1ULL, i_default, 0, '1', true, i1, i2) == i1);
+            REQUIRE(test_get_nth_or_initialize<matching::strict>(1ULL, true, 3, false) == false);
+            REQUIRE_THAT(test_get_nth_or_initialize<matching::strict>(1ULL, 0.0, 3, false, 1.2), WithinAbs(1.2, epsilon<double>));
+        }
+    }
+
+    GIVEN("a default value, a list of arguments and an index greater than 1 (at run time)")
+    {
+        THEN("the result is the default if there are not enough arguments of the exact same type as the default")
+        {
         }
     }
 }

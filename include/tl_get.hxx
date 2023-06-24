@@ -62,16 +62,35 @@ namespace pi::tl::internal
         }
     }
 
-    template<typename SearchedType, typename ...TypeList>
-    [[nodiscard]] auto constexpr get_or_initialize(size_t const nth, [[maybe_unused]] SearchedType default_value, [[maybe_unused]] TypeList &&...arguments)
+    template<typename SearchedType, typename Type>
+    [[nodiscard]] auto constexpr get_or_initialize(size_t const nth, [[maybe_unused]] SearchedType default_value, [[maybe_unused]] Type &&argument)
     {
-        if (nth >= sizeof...(TypeList))
+        if constexpr (!std::is_same_v<Type, SearchedType>)
+            return default_value;
+        else
+        {
+            if (nth != 1ULL)
+                return default_value;
+
+            return std::forward<Type>(argument);
+        }
+    }
+
+    template<typename SearchedType, typename Head, typename ...TypeList>
+    [[nodiscard]] auto constexpr get_or_initialize(size_t const nth, SearchedType default_value, Head &&first, [[maybe_unused]] TypeList &&...rest)
+    {
+        if (nth > count<SearchedType, Head, TypeList...>())
             return default_value;
 
-        if (nth == 1ULL)
-            return get_or_initialize<1ULL>(default_value, arguments...);
+        if constexpr (std::is_same_v<Head, SearchedType>)
+        {
+            if (nth == 1ULL)
+                return std::forward<Head>(first);
 
-        return default_value;
+            return get_or_initialize<SearchedType, TypeList...>(nth - 1ULL, std::forward<SearchedType>(default_value), std::forward<TypeList>(rest)...);
+        }
+        else
+            return get_or_initialize<SearchedType, TypeList...>(nth, std::forward<SearchedType>(default_value), std::forward<TypeList>(rest)...);
     }
 }
 
