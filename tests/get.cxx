@@ -246,7 +246,7 @@ SCENARIO("get_nth_or_initialize with strict matching strategy (run time)") // NO
 {
     GIVEN("a default value, a list of arguments and the index 1 (at run time)")
     {
-        THEN("the result is the default value if there is no argument of the same exact type as the default")
+        THEN("the result is the default value when there is no argument of the same exact type as the default")
         {
             REQUIRE(test_get_nth_or_initialize<matching::strict>(1ULL, 1, true, '2') == 1);
             int const i1 = 1;
@@ -254,7 +254,7 @@ SCENARIO("get_nth_or_initialize with strict matching strategy (run time)") // NO
             REQUIRE(test_get_nth_or_initialize<matching::strict>(1ULL, 0, i1, i_reference) == 0);
         }
 
-        THEN("the result is the first argument of that exact type if there is such an argument")
+        THEN("the result is the first argument of that same exact type when there is such an argument")
         {
             REQUIRE(test_get_nth_or_initialize<matching::strict>(1ULL, '\0', true, 1.2, '2') == '2');
             int const i_default = 0;
@@ -292,15 +292,59 @@ SCENARIO("get_nth_or_initialize with strict matching strategy (run time)") // NO
         }
     }
 }
-/*
+
 SCENARIO("get_nth_or_initialize with relaxed matching strategy (run time)") // NOLINT(misc-use-anonymous-namespace)
 {
-    GIVEN("a scenario")
+    GIVEN("a default value, a list of arguments and the index 1 (at run time)")
     {
         THEN("write the tests for it")
         {
-            REQUIRE(true);
+            THEN("the result is the default value when there is no argument of the same base type as the default")
+            {
+                REQUIRE(test_get_nth_or_initialize<matching::relaxed>(1ULL, 1, true, '2') == 1);
+                REQUIRE(test_get_nth_or_initialize<matching::relaxed>(1ULL, 0, 1.0f, 1U) == 0);
+            }
+
+            THEN("the result is the first argument of that same base type when there is such an argument")
+            {
+                char c_two = '2';
+                REQUIRE(test_get_nth_or_initialize<matching::relaxed>(1ULL, '\0', true, 1.2, c_two) == '2');
+                int const i_default = 0;
+                int const i1 = 1;
+                int const &i2 = i1;
+                REQUIRE(test_get_nth_or_initialize<matching::relaxed>(1ULL, i_default, 0, '1', true, i1, i2) == 0);
+                bool constexpr is_false = false;
+                REQUIRE(test_get_nth_or_initialize<matching::relaxed>(1ULL, true, 3, is_false) == false);
+                REQUIRE_THAT(test_get_nth_or_initialize<matching::relaxed>(1ULL, 0.0, 3, false, 1.2), WithinAbs(1.2, epsilon<double>));
+            }
+        }
+    }
+
+    GIVEN("a default value, a list of arguments and an index greater than 1 (at run time)")
+    {
+        THEN("the result is the default when there are not enough arguments of the same base type as the default")
+        {
+            REQUIRE(test_get_nth_or_initialize<matching::relaxed>(2ULL, '\0', true, 1.2, '2') == '\0');
+            int const i_default = 0;
+            int const i1 = 1;
+            REQUIRE(test_get_nth_or_initialize<matching::relaxed>(3ULL, i_default, 3, '1', true, i1) == i_default);
+            REQUIRE(test_get_nth_or_initialize<matching::relaxed>(4ULL, true, 0, '\0', false, false, false) == true);
+            REQUIRE_THAT(test_get_nth_or_initialize<matching::relaxed>(2ULL, 0.0, 3, false, 1.2), WithinAbs(0.0, epsilon<double>));
+        }
+
+        THEN("the result is the nth argument of that same base type when there are enough such an arguments")
+        {
+            char c_three = '3';
+            REQUIRE(test_get_nth_or_initialize<matching::relaxed>(2ULL, '\0', true, 1.2, '2', c_three) == '3');
+            int const i_default = 0;
+            int const i1 = 1;
+            int const i2 = 2;
+            REQUIRE(test_get_nth_or_initialize<matching::relaxed>(3ULL, i_default, 3, '1', true, i1, i2) == i2);
+            bool constexpr b = false;
+            bool const &br = b;
+            REQUIRE(test_get_nth_or_initialize<matching::relaxed>(4ULL, true, 3, true, true, true, br) == false);
+            double constexpr pi = 3.14159;
+            REQUIRE_THAT(test_get_nth_or_initialize<matching::relaxed>(2ULL, 0.0, 3, false, 1.2, 2.0f, pi), WithinAbs(pi, epsilon<double>));
         }
     }
 }
-*/
