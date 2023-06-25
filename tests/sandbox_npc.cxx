@@ -22,16 +22,27 @@ namespace
     };
 
     template <typename ...TypeList>
+    auto validate_npc()
+    {
+        auto constexpr number_of_strings = count<std::string, TypeList...>();
+        auto constexpr number_of_doubles = count<double, TypeList...>();
+        auto constexpr number_of_ints = count<int, TypeList...>();
+        auto constexpr number_of_arguments = sizeof...(TypeList);
+
+        static_assert(number_of_strings + number_of_doubles + number_of_ints == number_of_arguments,
+                      "Unexpected argument(s). Accepted arguments are (up to): 1·std::string (name), 3·doubles (x, y, z - position), 1·int (health points).");
+        static_assert(number_of_strings <= 1ULL, "Too many std::string arguments. At most one is expected: the name of the NPC.");
+        static_assert(number_of_doubles <= 3ULL, "Too many double arguments. At most three are expected: x, y and z (the position of the NPC, in this order).");
+        static_assert(number_of_ints <= 1ULL, "Too many int arguments. At most one is expected: the health points of the NPC.");
+    }
+
+    template <typename ...TypeList>
     [[maybe_unused]] auto initialize1([[maybe_unused]] TypeList &&...arguments)
     {
-        static_assert(count<std::string, TypeList...>() <= 1ULL, "Too many std::string arguments. At most one is expected: the name of the NPC.");
-        static_assert(count<double, TypeList...>() <= 3ULL, "Too many double arguments. At most three are expected: x, y and z (the position of the NPC, in this order).");
-        static_assert(count<int, TypeList...>() <= 1ULL, "Too many int arguments. At most one is expected: the health points of the NPC.");
-        static_assert(sizeof...(arguments) == count<std::string, TypeList...>() + count<double, TypeList...>() + count<int, TypeList...>()
-                    , "Invalid argument. Accepted arguments are (up to): 1 std::string (name), 3 doubles (x, y, z - position), 1 int (health points).");
+        validate_npc<TypeList...>();
 
         npc_t npc{};
-        npc.name = get_or_initialize("Some NPC"s, arguments...);
+        npc.name = get_or_initialize("NPC 1"s, arguments...);
         npc.x = get_nth_or_initialize<1>(10.0, arguments...); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
         npc.y = get_nth_or_initialize<2>(1.0, arguments...);
         npc.z = get_nth_or_initialize<3>(20.0, arguments...); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
@@ -43,14 +54,10 @@ namespace
     template <typename ...TypeList>
     [[maybe_unused]] auto initialize2([[maybe_unused]] TypeList &&...arguments)
     {
-        static_assert(count<std::string, TypeList...>() <= 1ULL, "Too many std::string arguments. At most one is expected: the name of the NPC.");
-        static_assert(count<double, TypeList...>() <= 3ULL, "Too many double arguments. At most three are expected: x, y and z (the position of the NPC, in this order).");
-        static_assert(count<int, TypeList...>() <= 1ULL, "Too many int arguments. At most one is expected: the health points of the NPC.");
-        static_assert(sizeof...(arguments) == count<std::string, TypeList...>() + count<double, TypeList...>() + count<int, TypeList...>()
-                    , "Invalid argument. Accepted arguments are (up to): 1 std::string (name), 3 doubles (x, y, z - position), 1 int (health points).");
+        validate_npc<TypeList...>();
 
         npc_t npc{};
-        npc.name = get_or_initialize("Some other NPC"s, arguments...);
+        npc.name = get_or_initialize("NPC 2"s, arguments...);
         npc.hp = get_or_initialize(200, arguments...); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
         npc.x = get_nth_or_initialize<1>(-10.0, arguments...); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
         npc.y = get_nth_or_initialize<2>(2.0, arguments...); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
@@ -60,21 +67,21 @@ namespace
     }
 }
 
-SCENARIO("sandbox") // NOLINT(misc-use-anonymous-namespace)
+SCENARIO("sandbox (NPC)") // NOLINT(misc-use-anonymous-namespace)
 {
     GIVEN("an instance of type NPC and an initialization function")
     {
         THEN("all data members are initialized with the implementer's defaults if no arguments are provided")
         {
             auto const npc1 = initialize1();
-            REQUIRE(npc1.name == "Some NPC"s);
+            REQUIRE(npc1.name == "NPC 1"s);
             REQUIRE_THAT(npc1.x, WithinAbs(10.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc1.y, WithinAbs(1.0, epsilon<double>));
             REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc1.hp == 100);
 
             auto const npc2 = initialize2();
-            REQUIRE(npc2.name == "Some other NPC"s);
+            REQUIRE(npc2.name == "NPC 2"s);
             REQUIRE_THAT(npc2.x, WithinAbs(-10.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc2.y, WithinAbs(2.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc2.z, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
@@ -101,14 +108,14 @@ SCENARIO("sandbox") // NOLINT(misc-use-anonymous-namespace)
         THEN("if only one int argument is provided, only the HP of the NPC will be different than the implementer's default")
         {
             auto const npc1 = initialize1(400);
-            REQUIRE(npc1.name == "Some NPC"s);
+            REQUIRE(npc1.name == "NPC 1"s);
             REQUIRE_THAT(npc1.x, WithinAbs(10.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc1.y, WithinAbs(1.0, epsilon<double>));
             REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc1.hp == 400);
 
             auto const npc2 = initialize2(1'000'000);
-            REQUIRE(npc2.name == "Some other NPC"s);
+            REQUIRE(npc2.name == "NPC 2"s);
             REQUIRE_THAT(npc2.x, WithinAbs(-10.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc2.y, WithinAbs(2.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc2.z, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
@@ -118,14 +125,14 @@ SCENARIO("sandbox") // NOLINT(misc-use-anonymous-namespace)
         THEN("if only one double argument is provided, only the x position component of the NPC will be different than the implementer's default")
         {
             auto const npc1 = initialize1(100.0);
-            REQUIRE(npc1.name == "Some NPC"s);
+            REQUIRE(npc1.name == "NPC 1"s);
             REQUIRE_THAT(npc1.x, WithinAbs(100.0, epsilon<double>));
             REQUIRE_THAT(npc1.y, WithinAbs(1.0, epsilon<double>));
             REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc1.hp == 100);
 
             auto const npc2 = initialize2(-100.0);
-            REQUIRE(npc2.name == "Some other NPC"s);
+            REQUIRE(npc2.name == "NPC 2"s);
             REQUIRE_THAT(npc2.x, WithinAbs(-100.0, epsilon<double>));
             REQUIRE_THAT(npc2.y, WithinAbs(2.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc2.z, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
@@ -135,14 +142,14 @@ SCENARIO("sandbox") // NOLINT(misc-use-anonymous-namespace)
         THEN("if only two double argument are provided, only the x and y position components of the NPC will be different than the implementer's default")
         {
             auto const npc1 = initialize1(100.0, 1.5);
-            REQUIRE(npc1.name == "Some NPC"s);
+            REQUIRE(npc1.name == "NPC 1"s);
             REQUIRE_THAT(npc1.x, WithinAbs(100.0, epsilon<double>));
             REQUIRE_THAT(npc1.y, WithinAbs(1.5, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc1.z, WithinAbs(20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc1.hp == 100);
 
             auto const npc2 = initialize2(-100.0, 100.0);
-            REQUIRE(npc2.name == "Some other NPC"s);
+            REQUIRE(npc2.name == "NPC 2"s);
             REQUIRE_THAT(npc2.x, WithinAbs(-100.0, epsilon<double>));
             REQUIRE_THAT(npc2.y, WithinAbs(100.0, epsilon<double>));
             REQUIRE_THAT(npc2.z, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
@@ -152,14 +159,14 @@ SCENARIO("sandbox") // NOLINT(misc-use-anonymous-namespace)
         THEN("if only three double argument are provided, only the position of the NPC will be different than the implementer's default")
         {
             auto const npc1 = initialize1(100.0, 1.5, 0.1);
-            REQUIRE(npc1.name == "Some NPC"s);
+            REQUIRE(npc1.name == "NPC 1"s);
             REQUIRE_THAT(npc1.x, WithinAbs(100.0, epsilon<double>));
             REQUIRE_THAT(npc1.y, WithinAbs(1.5, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(npc1.z, WithinAbs(0.1, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(npc1.hp == 100);
 
             auto const npc2 = initialize2(-100.0, 100.0, -0.1);
-            REQUIRE(npc2.name == "Some other NPC"s);
+            REQUIRE(npc2.name == "NPC 2"s);
             REQUIRE_THAT(npc2.x, WithinAbs(-100.0, epsilon<double>));
             REQUIRE_THAT(npc2.y, WithinAbs(100.0, epsilon<double>));
             REQUIRE_THAT(npc2.z, WithinAbs(-0.1, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
