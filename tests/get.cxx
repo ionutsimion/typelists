@@ -268,8 +268,27 @@ SCENARIO("get_nth_or_initialize with strict matching strategy (run time)") // NO
 
     GIVEN("a default value, a list of arguments and an index greater than 1 (at run time)")
     {
-        THEN("the result is the default if there are not enough arguments of the exact same type as the default")
+        THEN("the result is the default when there are not enough arguments of the exact same type as the default")
         {
+            REQUIRE(test_get_nth_or_initialize<matching::strict>(2ULL, '\0', true, 1.2, '2') == '\0');
+            int const i_default = 0;
+            int const i1 = 1;
+            int const i2 = 2;
+            REQUIRE(test_get_nth_or_initialize<matching::strict>(3ULL, i_default, 3, '1', true, i1, i2) == i_default);
+            REQUIRE(test_get_nth_or_initialize<matching::strict>(4ULL, true, 0, '\0', false, false, false) == true);
+            REQUIRE_THAT(test_get_nth_or_initialize<matching::strict>(2ULL, 0.0, 3, false, 1.2), WithinAbs(0.0, epsilon<double>));
+        }
+
+        THEN("the result is the nth argument of that exact type when there are enough such an arguments")
+        {
+            REQUIRE(test_get_nth_or_initialize<matching::strict>(2ULL, '\0', true, 1.2, '2', '3') == '3');
+            int const i_default = 0;
+            int const i1 = 1;
+            int const i2 = 2;
+            int const i3 = 13;
+            REQUIRE(test_get_nth_or_initialize<matching::strict>(3ULL, i_default, 3, '1', true, i1, i2, i3) == i3);
+            REQUIRE(test_get_nth_or_initialize<matching::strict>(4ULL, true, 3, true, true, true, false) == false);
+            REQUIRE_THAT(test_get_nth_or_initialize<matching::strict>(2ULL, 0.0, 3, false, 1.2, 2.0f, 3.14159), WithinAbs(3.14159, epsilon<double>));
         }
     }
 }
