@@ -21,7 +21,7 @@ namespace
     using z_t = typedecl<double, TAG(ZAxis)>;
     using health_t = typedecl<int, AUTO_TAG>;
 
-    decltype(auto) constexpr operator ""_name(char const *string, unsigned int)
+    decltype(auto) constexpr operator ""_name(char const *string, unsigned long long)
     {
         return name_t{ string };
     }
