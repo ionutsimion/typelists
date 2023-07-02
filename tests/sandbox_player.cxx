@@ -25,37 +25,37 @@ namespace
 
     decltype(auto) constexpr operator ""_x(long double const value)
     {
-        return x_t{ value };
+        return x_t{ static_cast<z_t::value_type>(value) };
     }
 
     decltype(auto) constexpr operator ""_x(unsigned long long const value)
     {
-        return x_t{ value };
+        return x_t{ static_cast<z_t::value_type>(value) };
     }
 
     decltype(auto) constexpr operator ""_y(long double const value)
     {
-        return y_t{ value };
+        return y_t{ static_cast<y_t::value_type>(value) };
     }
 
     decltype(auto) constexpr operator ""_y(unsigned long long const value)
     {
-        return y_t{ value };
+        return y_t{ static_cast<y_t::value_type>(value) };
     }
 
     decltype(auto) constexpr operator ""_z(long double const value)
     {
-        return z_t{ value };
+        return z_t{ static_cast<z_t::value_type>(value) };
     }
 
     decltype(auto) constexpr operator ""_z(unsigned long long const value)
     {
-        return z_t{ value };
+        return z_t{ static_cast<z_t::value_type>(value) };
     }
 
     decltype(auto) constexpr operator ""_hp(unsigned long long const value)
     {
-        return health_t{ value };
+        return health_t{ static_cast<health_t::value_type>(value) };
     }
 
     struct player_t final
@@ -274,7 +274,7 @@ SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
             REQUIRE(player1->hp == 100_hp);
 
             safe_player_t player2;
-            player2 = initialize2();
+            player2 = static_cast<safe_player_t>(initialize2());
             REQUIRE(player2->name == "Player 2"_name);
             REQUIRE_THAT(player2->x, WithinAbs(-100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(player2->y, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
@@ -301,7 +301,7 @@ SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
 
             safe_player_t player2;
             a_player = initialize2();
-            player2 = a_player;
+            player2 = static_cast<safe_player_t>(a_player);
             REQUIRE(player2->name == "Player 2"_name);
             REQUIRE_THAT(player2->x, WithinAbs(-100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(player2->y, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)

@@ -10,10 +10,12 @@
 namespace pi::td
 {
     template<typename Type, typename Tag>
-    struct typedecl : internal::typedecl_base<Type>
+    struct typedecl : public internal::typedecl_base<Type, Tag>
     {
-        using internal::typedecl_base<Type>::typedecl_base;
-        using internal::typedecl_base<Type>::operator =;
+        using value_type = Type;
+
+        using internal::typedecl_base<Type, Tag>::typedecl_base;
+        using internal::typedecl_base<Type, Tag>::operator =;
     };
 }
 
