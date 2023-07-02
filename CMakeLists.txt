@@ -28,7 +28,7 @@ else()
     target_compile_options(PiTypeLists INTERFACE -Werror -Wall -Wextra -pedantic)
 endif()
 
-add_executable(tests tests/main.cxx tests/main.cxx tests/find.cxx tests/count.cxx tests/get.cxx tests/sandbox_npc.cxx tests/toolbox.hxx tests/sandbox_player.cxx)
+add_executable(tests tests/main.cxx tests/main.cxx tests/find.cxx tests/count.cxx tests/get.cxx tests/sandbox_npc.cxx tests/toolbox.hxx tests/sandbox_player.cxx tests/typedecl_fundamental.cxx tests/typedecl_final_class.cxx tests/typedecl_class.cxx)
 target_link_libraries(tests PRIVATE PiTypeLists Catch2::Catch2)
 target_include_directories(tests PRIVATE ${Catch2_INCLUDE_DIRS} tests)
 target_compile_features(tests PRIVATE cxx_std_20)
