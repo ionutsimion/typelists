@@ -10,9 +10,6 @@ using namespace pi::tl;
 using namespace pi::td;
 
 #include <toolbox.hxx>
-
-using namespace std::string_literals;
-
 namespace
 {
     using name_t = typedecl<std::string, AUTO_TAG>;
@@ -21,7 +18,7 @@ namespace
     using z_t = typedecl<double, TAG(ZAxis)>;
     using health_t = typedecl<int, AUTO_TAG>;
 
-    decltype(auto) constexpr operator ""_name(char const *string, unsigned long long)
+    decltype(auto) operator ""_name(char const *string, size_t)
     {
         return name_t{ string };
     }
@@ -61,7 +58,7 @@ namespace
         return health_t{ value };
     }
 
-    struct player_t
+    struct player_t final
     {
         name_t name{};
 
@@ -71,6 +68,7 @@ namespace
 
         health_t hp{};
     };
+    using safe_player_t = typedecl<player_t, TAG(Player)>;
 
     template <typename ...TypeList>
     auto validate_player()
@@ -124,6 +122,8 @@ namespace
 
 SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
 {
+    using namespace std::string_literals;
+
     GIVEN("an instance of type Player and an initialization function")
     {
         THEN("all data members are initialized with the implementer's defaults if no arguments are provided")
@@ -249,6 +249,71 @@ SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
             REQUIRE_THAT(player2.y, WithinAbs(1.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE_THAT(player2.z, WithinAbs(1.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player2.hp == 0);
+        }
+    }
+
+    GIVEN("a safe type over a class or structure declared as final")
+    {
+        THEN("the default initialized data can be accessed through the '->' and '*' operator")
+        {
+            safe_player_t const player{};
+            REQUIRE(player->name.empty());
+            REQUIRE_THAT(player->x, WithinAbs(0.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player->y, WithinAbs(0.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player->z, WithinAbs(0.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE(player->hp == 0);
+        }
+
+        THEN("the move initialized data can be accessed through the '->' and '*' operator")
+        {
+            auto const player1 = safe_player_t{ initialize1() };
+            REQUIRE(player1->name == "Player 1"_name);
+            REQUIRE_THAT(player1->x, WithinAbs(100.0_x, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1->y, WithinAbs(10.0_y, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1->z, WithinAbs(200.0_z, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE(player1->hp == 100_hp);
+
+            safe_player_t player2;
+            player2 = initialize2();
+            REQUIRE(player2->name == "Player 2"_name);
+            REQUIRE_THAT(player2->x, WithinAbs(-100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2->y, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2->z, WithinAbs(-200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE(player2->hp == 200_hp);
+
+            REQUIRE((*player2).name == "Player 2");
+            auto const &player_r = *player2;
+            REQUIRE_THAT(player_r.x, WithinAbs(-100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player_r.y, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player_r.z, WithinAbs(-200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE(player_r.hp == 200_hp);
+        }
+
+        THEN("the copy initialized data can be accessed through the '->' and '*' operator")
+        {
+            auto a_player = initialize1();
+            auto const player1 = safe_player_t{ a_player };
+            REQUIRE(player1->name == "Player 1"_name);
+            REQUIRE_THAT(player1->x, WithinAbs(100.0_x, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1->y, WithinAbs(10.0_y, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1->z, WithinAbs(200.0_z, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE(player1->hp == 100_hp);
+
+            safe_player_t player2;
+            a_player = initialize2();
+            player2 = a_player;
+            REQUIRE(player2->name == "Player 2"_name);
+            REQUIRE_THAT(player2->x, WithinAbs(-100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2->y, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2->z, WithinAbs(-200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE(player2->hp == 200_hp);
+
+            REQUIRE((*player2).name == "Player 2");
+            auto const &player_r = *player2;
+            REQUIRE_THAT(player_r.x, WithinAbs(-100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player_r.y, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player_r.z, WithinAbs(-200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE(player_r.hp == 200);
         }
     }
 }
