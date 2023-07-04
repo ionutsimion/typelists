@@ -10,6 +10,7 @@ using namespace pi::tl;
 using namespace pi::td;
 
 #include <toolbox.hxx>
+
 namespace
 {
     using name_t = typedecl<std::string, AUTO_TAG>;
@@ -130,16 +131,16 @@ SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
         {
             auto const player1 = initialize1();
             REQUIRE(player1.name == "Player 1"_name);
-            REQUIRE_THAT(player1.x, WithinAbs(100.0_x, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1.y, WithinAbs(10.0_y, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1.z, WithinAbs(200.0_z, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.x, WithinAbs(100.0_x, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.y, WithinAbs(10.0_y, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.z, WithinAbs(200.0_z, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player1.hp == 100_hp);
 
             auto const player2 = initialize2();
             REQUIRE(player2.name == "Player 2"s);
-            REQUIRE_THAT(player2.x, WithinAbs(-100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2.y, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2.z, WithinAbs(-200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.x, WithinAbs(-100.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.y, WithinAbs(-20.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.z, WithinAbs(-200.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player2.hp == 200);
         }
 
@@ -147,16 +148,16 @@ SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
         {
             auto const player1 = initialize1("Batman"_name);
             REQUIRE(player1.name == "Batman"_name);
-            REQUIRE_THAT(player1.x, WithinAbs(100.0_x, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1.y, WithinAbs(10.0_y, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1.z, WithinAbs(200.0_z, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.x, WithinAbs(100.0_x, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.y, WithinAbs(10.0_y, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.z, WithinAbs(200.0_z, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player1.hp == 100_hp);
 
             auto const player2 = initialize2("Superman"_name);
             REQUIRE(player2.name == "Superman");
-            REQUIRE_THAT(player2.x, WithinAbs(-100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2.y, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2.z, WithinAbs(-200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.x, WithinAbs(-100.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.y, WithinAbs(-20.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.z, WithinAbs(-200.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player2.hp == 200);
         }
 
@@ -164,16 +165,16 @@ SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
         {
             auto const player1 = initialize1(400_hp);
             REQUIRE(player1.name == "Player 1"s);
-            REQUIRE_THAT(player1.x, WithinAbs(100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1.y, WithinAbs(10.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1.z, WithinAbs(200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.x, WithinAbs(100.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.y, WithinAbs(10.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.z, WithinAbs(200.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player1.hp == 400_hp);
 
             auto const player2 = initialize2(1'000'000_hp);
             REQUIRE(player2.name == "Player 2"s);
-            REQUIRE_THAT(player2.x, WithinAbs(-100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2.y, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2.z, WithinAbs(-200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.x, WithinAbs(-100.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.y, WithinAbs(-20.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.z, WithinAbs(-200.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player2.hp == 1'000'000);
         }
 
@@ -181,18 +182,18 @@ SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
         {
             auto const player1 = initialize1(1000.0_x);
             REQUIRE(player1.name == "Player 1"s);
-            REQUIRE_THAT(player1.x, WithinAbs(1000.0_x, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1.y, WithinAbs(10.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1.z, WithinAbs(200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.x, WithinAbs(1000.0_x, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.y, WithinAbs(10.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.z, WithinAbs(200.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player1.hp == 100);
 
             // I cannot use negatives with the user literal here, because it will be seen as a double inside the function.
             // This is due to automatic conversions, but, still, they do have their advantages
             auto const player2 = initialize2(x_t{ -1000.0 });
             REQUIRE(player2.name == "Player 2"s);
-            REQUIRE_THAT(player2.x, WithinAbs(-1000.0_x, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2.y, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2.z, WithinAbs(-200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.x, WithinAbs(-1000.0_x, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.y, WithinAbs(-20.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.z, WithinAbs(-200.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player2.hp == 200);
         }
 
@@ -200,18 +201,18 @@ SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
         {
             auto const player1 = initialize1(100.0_y);
             REQUIRE(player1.name == "Player 1"s);
-            REQUIRE_THAT(player1.x, WithinAbs(100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1.y, WithinAbs(100.0_y, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1.z, WithinAbs(200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.x, WithinAbs(100.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.y, WithinAbs(100.0_y, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.z, WithinAbs(200.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player1.hp == 100);
 
             // I cannot use negatives with the user literal here, because it will be seen as a double inside the function.
             // This is due to automatic conversions, but, still, they do have their advantages
             auto const player2 = initialize2(y_t{ -200.0 });
             REQUIRE(player2.name == "Player 2"s);
-            REQUIRE_THAT(player2.x, WithinAbs(-100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2.y, WithinAbs(-200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2.z, WithinAbs(-200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.x, WithinAbs(-100.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.y, WithinAbs(-200.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.z, WithinAbs(-200.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player2.hp == 200);
         }
 
@@ -219,18 +220,18 @@ SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
         {
             auto const player1 = initialize1(2000.0_z);
             REQUIRE(player1.name == "Player 1"s);
-            REQUIRE_THAT(player1.x, WithinAbs(100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1.y, WithinAbs(10.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1.z, WithinAbs(2000.0_z, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.x, WithinAbs(100.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.y, WithinAbs(10.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.z, WithinAbs(2000.0_z, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player1.hp == 100);
 
             // I cannot use negatives with the user literal here, because it will be seen as a double inside the function.
             // This is due to automatic conversions, but, still, they do have their advantages
             auto const player2 = initialize2(z_t{ -2000.0 });
             REQUIRE(player2.name == "Player 2"s);
-            REQUIRE_THAT(player2.x, WithinAbs(-100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2.y, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2.z, WithinAbs(-2000.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.x, WithinAbs(-100.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.y, WithinAbs(-20.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.z, WithinAbs(-2000.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player2.hp == 200);
         }
 
@@ -238,16 +239,16 @@ SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
         {
             auto const player1 = initialize1(0_z, 0_x, 0_y, 1_hp, "P 1"_name);
             REQUIRE(player1.name == "P 1"_name);
-            REQUIRE_THAT(player1.x, WithinAbs(0.0_x, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1.y, WithinAbs(0.0_y, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1.z, WithinAbs(0.0_z, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.x, WithinAbs(0.0_x, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.y, WithinAbs(0.0_y, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1.z, WithinAbs(0.0_z, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player1.hp == 1_hp);
 
             auto const player2 = initialize2(0_hp, 1_x, 1_y, 1_z, "Zombie"_name);
             REQUIRE(player2.name == "Zombie"s);
-            REQUIRE_THAT(player2.x, WithinAbs(1.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2.y, WithinAbs(1.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2.z, WithinAbs(1.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.x, WithinAbs(1.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.y, WithinAbs(1.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2.z, WithinAbs(1.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player2.hp == 0);
         }
     }
@@ -258,9 +259,9 @@ SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
         {
             safe_player_t const player{};
             REQUIRE(player->name.empty());
-            REQUIRE_THAT(player->x, WithinAbs(0.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player->y, WithinAbs(0.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player->z, WithinAbs(0.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player->x, WithinAbs(0.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player->y, WithinAbs(0.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player->z, WithinAbs(0.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player->hp == 0);
         }
 
@@ -268,24 +269,24 @@ SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
         {
             auto const player1 = safe_player_t{ initialize1() };
             REQUIRE(player1->name == "Player 1"_name);
-            REQUIRE_THAT(player1->x, WithinAbs(100.0_x, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1->y, WithinAbs(10.0_y, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1->z, WithinAbs(200.0_z, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1->x, WithinAbs(100.0_x, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1->y, WithinAbs(10.0_y, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1->z, WithinAbs(200.0_z, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player1->hp == 100_hp);
 
             safe_player_t player2;
             player2 = static_cast<safe_player_t>(initialize2());
             REQUIRE(player2->name == "Player 2"_name);
-            REQUIRE_THAT(player2->x, WithinAbs(-100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2->y, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2->z, WithinAbs(-200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2->x, WithinAbs(-100.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2->y, WithinAbs(-20.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2->z, WithinAbs(-200.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player2->hp == 200_hp);
 
             REQUIRE((*player2).name == "Player 2");
             auto const &player_r = *player2;
-            REQUIRE_THAT(player_r.x, WithinAbs(-100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player_r.y, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player_r.z, WithinAbs(-200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player_r.x, WithinAbs(-100.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player_r.y, WithinAbs(-20.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player_r.z, WithinAbs(-200.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player_r.hp == 200_hp);
         }
 
@@ -294,25 +295,25 @@ SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
             auto a_player = initialize1();
             auto const player1 = safe_player_t{ a_player };
             REQUIRE(player1->name == "Player 1"_name);
-            REQUIRE_THAT(player1->x, WithinAbs(100.0_x, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1->y, WithinAbs(10.0_y, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player1->z, WithinAbs(200.0_z, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1->x, WithinAbs(100.0_x, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1->y, WithinAbs(10.0_y, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player1->z, WithinAbs(200.0_z, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player1->hp == 100_hp);
 
             safe_player_t player2;
             a_player = initialize2();
             player2 = static_cast<safe_player_t>(a_player);
             REQUIRE(player2->name == "Player 2"_name);
-            REQUIRE_THAT(player2->x, WithinAbs(-100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2->y, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player2->z, WithinAbs(-200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2->x, WithinAbs(-100.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2->y, WithinAbs(-20.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player2->z, WithinAbs(-200.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player2->hp == 200_hp);
 
             REQUIRE((*player2).name == "Player 2");
             auto const &player_r = *player2;
-            REQUIRE_THAT(player_r.x, WithinAbs(-100.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player_r.y, WithinAbs(-20.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
-            REQUIRE_THAT(player_r.z, WithinAbs(-200.0, epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player_r.x, WithinAbs(-100.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player_r.y, WithinAbs(-20.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
+            REQUIRE_THAT(player_r.z, WithinAbs(-200.0, pi::epsilon<double>)); // NOLINT(cppcoreguidelines-avoid-magic-numbers)
             REQUIRE(player_r.hp == 200);
         }
     }

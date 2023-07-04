@@ -9,7 +9,7 @@
 
 namespace pi::td
 {
-    template<typename Type, typename Tag>
+    template <typename Type, typename Tag>
     struct typedecl : public internal::typedecl_base<Type, Tag>
     {
         using value_type = Type;
