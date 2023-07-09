@@ -78,7 +78,7 @@ namespace pi::tl
     [[nodiscard]] decltype(auto) constexpr get(TypeList &&...arguments);
 
     /*!
-     * @brief Tet the argument at the required index from the given TypeList
+     * @brief Get the argument at the required index from the given TypeList
      * @tparam TypeList List of types
      * @param index 0-based index (not necessarily known at compile-time)
      * @param arguments List of arguments
@@ -136,6 +136,32 @@ namespace pi::tl
      */
     template <size_t Nth, typename SearchedType, typename ...TypeList>
     [[nodiscard]] auto constexpr get_nth_or_initialize(SearchedType default_value, TypeList &&...arguments);
+
+    /*!
+     * @brief Get the argument of the given type and index or the default value, respecting the matching strategy.
+     * @tparam Strategy The matching strategy
+     * @tparam SearchedType Type of the expected argument
+     * @tparam TypeList List of types
+     * @param index The 1-based index of the SearchedType argument
+     * @param default_value The fall-back initialization value in case there is no matching argument
+     * @param arguments List of arguments
+     * @return The nth argument of the same type, respecting the matching strategy, or the default value.
+     */
+    template <matching Strategy, typename SearchedType, typename ...TypeList>
+    [[nodiscard]] auto constexpr get_nth_or_initialize(size_t index, SearchedType default_value, TypeList &&...arguments);
+
+    /*!
+     * @brief Get the argument of the given type and index or the default value, using the relaxed matching strategy.
+     * @tparam Strategy The matching strategy
+     * @tparam SearchedType Type of the expected argument
+     * @tparam TypeList List of types
+     * @param index The 1-based index of the SearchedType argument
+     * @param default_value The fall-back initialization value in case there is no matching argument
+     * @param arguments List of arguments
+     * @return The nth argument of the same type, respecting the matching strategy, or the default value.
+     */
+    template <typename SearchedType, typename ...TypeList>
+    [[nodiscard]] auto constexpr get_nth_or_initialize(size_t index, SearchedType default_value, TypeList &&...arguments);
 }
 
 namespace pi::tl
@@ -183,7 +209,7 @@ namespace pi::tl
     }
 
     template<typename ...TypeList>
-    [[nodiscard]] decltype(auto) constexpr get(size_t index, TypeList &&...arguments)
+    [[nodiscard]] decltype(auto) constexpr get(size_t const index, TypeList &&...arguments)
     {
         return internal::get<TypeList...>(index, std::forward<TypeList>(arguments)...);
     }

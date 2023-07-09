@@ -42,8 +42,8 @@ namespace pi::td::internal
     struct wrapper_for_fundamental
     {
         constexpr wrapper_for_fundamental() = default;
-        constexpr wrapper_for_fundamental(wrapper_for_fundamental &&) = default;
-        constexpr wrapper_for_fundamental(wrapper_for_fundamental const &) = default;
+        constexpr wrapper_for_fundamental(wrapper_for_fundamental &&) noexcept = default;
+        constexpr wrapper_for_fundamental(wrapper_for_fundamental const &) noexcept = default;
 
         explicit constexpr wrapper_for_fundamental(Type const value) noexcept
         : data_{ static_cast<Type>(value) }
@@ -53,7 +53,7 @@ namespace pi::td::internal
         template <typename FromType, typename FromTag>
         wrapper_for_fundamental &operator =(wrapper_for_fundamental<FromType, FromTag> &&other) noexcept
         {
-            static_assert(std::is_same_v<FromType, Type> && std::is_same_v<FromTag, Tag>, "You cannot implicitly convert between stron types.");
+            static_assert(std::is_same_v<FromType, Type> && std::is_same_v<FromTag, Tag>, "You cannot implicitly convert between strong types.");
 
             data_ = std::forward<FromType>(other.data_);
             return *this;
@@ -62,7 +62,7 @@ namespace pi::td::internal
         template <typename FromType, typename FromTag>
         wrapper_for_fundamental &operator =(wrapper_for_fundamental<FromType, FromTag> const &other) noexcept
         {
-            static_assert(std::is_same_v<FromType, Type> && std::is_same_v<FromTag, Tag>, "You cannot implicitly convert between stron types.");
+            static_assert(std::is_same_v<FromType, Type> && std::is_same_v<FromTag, Tag>, "You cannot implicitly convert between strong types.");
 
             data_ = other.data_;
             return *this;
@@ -96,6 +96,29 @@ namespace pi::td::internal
     {
         using Type::Type;
         using Type::operator =;
+
+        template <typename FromType, typename FromTag>
+        derived_from &operator =(derived_from<FromType, FromTag> &&other) noexcept
+        {
+            static_assert(std::is_same_v<FromType, Type> && std::is_same_v<FromTag, Tag>, "You cannot implicitly convert between strong types.");
+
+            *this = std::forward<FromType>(other.data_);
+            return *this;
+        }
+
+        template <typename FromType, typename FromTag>
+        derived_from &operator =(derived_from<FromType, FromTag> const &other) noexcept
+        {
+            static_assert(std::is_same_v<FromType, Type> && std::is_same_v<FromTag, Tag>, "You cannot implicitly convert between strong types.");
+
+            *this = std::forward<FromType>(other.data_);
+            return *this;
+        }
+
+        operator Type() const noexcept // NOLINT(google-explicit-constructor)
+        {
+            return *this;
+        }
     };
 
     template <typename Type, typename Tag>
