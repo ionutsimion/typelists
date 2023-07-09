@@ -152,3 +152,48 @@ SCENARIO("given a strong type over a derived user class")
         REQUIRE(d1.comment == "changed to 4"s);
     }
 }
+
+SCENARIO("given a strong type over standard library string")
+{
+    using safe_string_t = typedecl<std::string, AUTO_TAG>;
+    using namespace std::string_literals;
+    using namespace std::string_view_literals;
+
+    THEN("an instance can be default initialized and the underlying string is empty")
+    {
+        safe_string_t const s{};
+        REQUIRE(s.empty());
+    }
+
+    THEN("an instance can be changed using = operator (with casting where necessary)")
+    {
+        safe_string_t s{};
+
+        s = "char *";
+        REQUIRE(s == "char *");
+
+        s.clear();
+        REQUIRE(s.empty());
+
+        s = "string_view"sv;
+        REQUIRE(s == "string_view"sv);
+
+        s = "string"s;
+        REQUIRE(s == "string"s);
+
+        s = static_cast<safe_string_t>(typedecl<std::string, AUTO_TAG>{}.data());
+        REQUIRE(s.empty());
+    }
+
+    THEN("algorithms and iterators can be used as with 'unsafe' string")
+    {
+        safe_string_t s{};
+
+        s.resize(10);
+        std::generate(s.begin(), s.end(), [i = 0]() mutable { return '0' + i++; });
+        REQUIRE(s == "0123456789"s);
+
+        std::reverse(s.begin(), s.end());
+        REQUIRE(s == "9876543210"s);
+    }
+}
