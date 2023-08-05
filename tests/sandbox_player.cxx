@@ -11,6 +11,10 @@ using namespace pi::td;
 
 #include <toolbox.hxx>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+#pragma ide diagnostic ignored "cppcoreguidelines-avoid-do-while"
+
 namespace
 {
     using name_t = typedecl<std::string, AUTO_TAG>;
@@ -96,11 +100,11 @@ namespace
         validate_player<TypeList...>();
 
         player_t player{};
-        player.name = get_or_initialize("Player 1"_name, arguments...);
-        player.x = get_or_initialize(100.0_x, arguments...);
-        player.y = get_or_initialize(10.0_y, arguments...);
-        player.z = get_or_initialize(200.0_z, arguments...);
-        player.hp = get_or_initialize(100_hp, arguments...);
+        player.name = get_or_initialize("Player 1"_name, std::forward<TypeList>(arguments)...);
+        player.x = get_or_initialize(100.0_x, std::forward<TypeList>(arguments)...);
+        player.y = get_or_initialize(10.0_y, std::forward<TypeList>(arguments)...);
+        player.z = get_or_initialize(200.0_z, std::forward<TypeList>(arguments)...);
+        player.hp = get_or_initialize(100_hp, std::forward<TypeList>(arguments)...);
 
         return player;
     }
@@ -111,11 +115,11 @@ namespace
         validate_player<TypeList...>();
 
         player_t player{};
-        player.name = get_or_initialize("Player 2"_name, arguments...);
-        player.hp = get_or_initialize(200_hp, arguments...);
-        player.x = get_or_initialize(x_t{ -100.0 }, arguments...);
-        player.y = get_or_initialize(y_t{ -20.0 }, arguments...);
-        player.z = get_or_initialize(z_t{ -200.0 }, arguments...);
+        player.name = get_or_initialize("Player 2"_name, std::forward<TypeList>(arguments)...);
+        player.hp = get_or_initialize(200_hp, std::forward<TypeList>(arguments)...);
+        player.x = get_or_initialize(x_t{ -100.0 }, std::forward<TypeList>(arguments)...);
+        player.y = get_or_initialize(y_t{ -20.0 }, std::forward<TypeList>(arguments)...);
+        player.z = get_or_initialize(z_t{ -200.0 }, std::forward<TypeList>(arguments)...);
 
         return player;
     }
@@ -318,3 +322,5 @@ SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
         }
     }
 }
+
+#pragma clang diagnostic pop
