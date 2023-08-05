@@ -102,7 +102,7 @@ namespace pi::td::internal
         {
             static_assert(std::is_same_v<FromType, Type> && std::is_same_v<FromTag, Tag>, "You cannot implicitly convert between strong types.");
 
-            *this = std::forward<FromType>(other.data_);
+            *this = std::forward<FromType>(other);
             return *this;
         }
 
@@ -111,7 +111,7 @@ namespace pi::td::internal
         {
             static_assert(std::is_same_v<FromType, Type> && std::is_same_v<FromTag, Tag>, "You cannot implicitly convert between strong types.");
 
-            *this = std::forward<FromType>(other.data_);
+            *this = other;
             return *this;
         }
 
