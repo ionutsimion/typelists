@@ -11,10 +11,6 @@ using namespace pi::td;
 
 #include <toolbox.hxx>
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunknown-pragmas"
-#pragma ide diagnostic ignored "cppcoreguidelines-avoid-do-while"
-
 namespace
 {
     using name_t = typedecl<std::string, AUTO_TAG>;
@@ -94,6 +90,15 @@ namespace
         static_assert(number_of_healths <= 1ULL, "Too many health_t arguments. At most one is expected: the health points of the Player.");
     }
 
+    /*!
+    * @brief Initialize player 1.
+    * Accepted arguments (in any combination - number and order):
+    * - name [default "Player 1"]: name_t
+    * - x [default 100.0]: x_t
+    * - y [default 10.0]: y_t
+    * - z [default 200.0]: z_t
+    * - hp [default 100]: health_t
+    */
     template <typename ...TypeList>
     [[maybe_unused]] auto initialize1([[maybe_unused]] TypeList &&...arguments)
     {
@@ -109,6 +114,15 @@ namespace
         return player;
     }
 
+    /*!
+    * @brief Initialize player 2.
+    * Accepted arguments (in any combination - number and order):
+    * - name [default "Player 2"]: name_t
+    * - x [default -100.0]: x_t
+    * - y [default -20.0]: y_t
+    * - z [default -200.0]: z_t
+    * - hp [default 200]: health_t
+    */
     template <typename ...TypeList>
     [[maybe_unused]] auto initialize2([[maybe_unused]] TypeList &&...arguments)
     {
@@ -322,5 +336,3 @@ SCENARIO("sandbox (Player)") // NOLINT(misc-use-anonymous-namespace)
         }
     }
 }
-
-#pragma clang diagnostic pop
