@@ -11,15 +11,17 @@ include(FetchContent)
 FetchContent_Declare(
         Catch2
         GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-        GIT_TAG v3.3.2
+        GIT_TAG v3.4.0
 )
 FetchContent_MakeAvailable(Catch2)
 list(APPEND CMAKE_MODULE_PATH "${Catch2_SOURCE_DIR}/contrib")
 
-add_library(PiTypeLists INTERFACE include/typelists.hxx include/tl_matching_strategy.hxx include/tl_constants.hxx include/tl_find.hxx include/tl_count.hxx include/tl_get.hxx)
+add_library(PiTypeLists INTERFACE include/typedecl.hxx include/typelists.hxx include/struct.hxx
+        internal/tl_matching_strategy.hxx internal/tl_constants.hxx internal/tl_find.hxx internal/tl_count.hxx
+        internal/tl_get.hxx internal/td_typedecl_base.hxx)
 add_library(pi::TypeLists ALIAS PiTypeLists)
 
-target_include_directories(PiTypeLists INTERFACE include)
+target_include_directories(PiTypeLists INTERFACE include internal)
 target_compile_features(PiTypeLists INTERFACE cxx_std_20)
 
 if (MSVC)
@@ -28,7 +30,8 @@ else()
     target_compile_options(PiTypeLists INTERFACE -Werror -Wall -Wextra -pedantic)
 endif()
 
-add_executable(tests tests/main.cxx tests/main.cxx tests/find.cxx tests/count.cxx tests/get.cxx tests/sandbox.cxx tests/toolbox.hxx)
+add_executable(tests tests/main.cxx tests/main.cxx tests/find.cxx tests/count.cxx tests/get.cxx tests/sandbox_npc.cxx tests/toolbox.hxx tests/sandbox_player.cxx tests/typedecl_fundamental.cxx tests/typedecl_final_class.cxx tests/typedecl_class.cxx
+        tests/struct.cxx)
 target_link_libraries(tests PRIVATE PiTypeLists Catch2::Catch2)
 target_include_directories(tests PRIVATE ${Catch2_INCLUDE_DIRS} tests)
 target_compile_features(tests PRIVATE cxx_std_20)

@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-namespace pi::tl
+namespace pi
 {
     template<typename Type> auto constexpr zero = Type{ 0 };
     template<typename Type> auto constexpr one = Type{ 1 };
