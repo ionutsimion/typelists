@@ -16,11 +16,12 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Catch2)
 list(APPEND CMAKE_MODULE_PATH "${Catch2_SOURCE_DIR}/contrib")
 
-add_library(PiTypeLists INTERFACE include/typelists.hxx include/tl_matching_strategy.hxx include/tl_constants.hxx include/tl_find.hxx include/tl_count.hxx include/tl_get.hxx include/typedecl.hxx include/td_typedecl_base.hxx
-        include/struct.hxx)
+add_library(PiTypeLists INTERFACE include/typedecl.hxx include/typelists.hxx include/struct.hxx
+        internal/tl_matching_strategy.hxx internal/tl_constants.hxx internal/tl_find.hxx internal/tl_count.hxx
+        internal/tl_get.hxx internal/td_typedecl_base.hxx)
 add_library(pi::TypeLists ALIAS PiTypeLists)
 
-target_include_directories(PiTypeLists INTERFACE include)
+target_include_directories(PiTypeLists INTERFACE include internal)
 target_compile_features(PiTypeLists INTERFACE cxx_std_20)
 
 if (MSVC)

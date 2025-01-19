@@ -1,7 +1,6 @@
 #ifndef PITYPELISTS_TYPELISTS_HXX
 #define PITYPELISTS_TYPELISTS_HXX
 
-#include <tl_constants.hxx>
 #include <tl_get.hxx>
 #include <tl_find.hxx>
 #include <tl_matching_strategy.hxx>
