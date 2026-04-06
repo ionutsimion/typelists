@@ -60,7 +60,7 @@ SCENARIO("given a strong type over a char")
         REQUIRE(c == '\0');
     }
 
-    THEN("an instance can be default initialized with a char")
+    THEN("an instance can be initialized with a char")
     {
         char_t constexpr c{ ' ' };
         REQUIRE(c == 32);
@@ -97,7 +97,7 @@ SCENARIO("given a strong type over an integer")
     using natural_t = typedecl<uint64_t, TAG(Natural)>;
     using integer_t = typedecl<int64_t, TAG(Integer)>;
 
-    THEN("an instance can be default initialized and its value is 0 by default")
+    THEN("an instance can be default initialized and its value is 0")
     {
         natural_t constexpr n{};
         integer_t constexpr i{};
@@ -105,7 +105,7 @@ SCENARIO("given a strong type over an integer")
         REQUIRE(i == 0);
     }
 
-    THEN("an instance can be default initialized with a convertible value")
+    THEN("an instance can be initialized with a convertible value")
     {
         natural_t constexpr n{ 1 };
         integer_t constexpr i{ -1 };
@@ -154,7 +154,7 @@ SCENARIO("given a strong type over a floating point number")
         REQUIRE_THAT(r, WithinAbs(0.0, pi::epsilon<double>));
     }
 
-    THEN("an instance can be default initialized with a convertible value")
+    THEN("an instance can be initialized with a convertible value")
     {
         single_precision_t constexpr f{ 3.1415926f };
         double_precision_t constexpr r{ 3.141592658979323846 };
