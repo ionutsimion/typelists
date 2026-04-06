@@ -6,6 +6,39 @@ using namespace Catch::Matchers;
 #include <typedecl.hxx>
 using namespace pi::td;
 
+#include <complex>
+
+#include <toolbox.hxx>
+
+SCENARIO("given a strong type over a std::complex")
+{
+    using complex_t = typedecl<std::complex<double>, TAG(Complex)>;
+
+    THEN("an instance can be default initialized and its value is {0.0, 0.0} by default")
+    {
+        complex_t z{};
+        REQUIRE_THAT(z.real(), WithinAbs(0.0, pi::epsilon<double>));
+        REQUIRE_THAT(z.imag(), WithinAbs(0.0, pi::epsilon<double>));
+    }
+
+    THEN("an instance can be initialized with a convertible value")
+    {
+        using namespace std::complex_literals;
+
+        complex_t z1{ 1 };
+        REQUIRE_THAT(z1.real(), WithinAbs(1.0, pi::epsilon<double>));
+        REQUIRE_THAT(z1.imag(), WithinAbs(0.0, pi::epsilon<double>));
+
+        complex_t z2{ 5i };
+        REQUIRE_THAT(z2.real(), WithinAbs(0.0, pi::epsilon<double>));
+        REQUIRE_THAT(z2.imag(), WithinAbs(5.0, pi::epsilon<double>));
+
+        complex_t z3(1.0, 5);
+        REQUIRE_THAT(z3.real(), WithinAbs(1.0, pi::epsilon<double>));
+        REQUIRE_THAT(z3.imag(), WithinAbs(5.0, pi::epsilon<double>));
+    }
+}
+
 namespace
 {
     class user_defined_t
