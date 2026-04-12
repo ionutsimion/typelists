@@ -1,8 +1,8 @@
 #ifndef PITYPELISTS_STRUCT_HXX
 #define PITYPELISTS_STRUCT_HXX
 
-#include <typedecl.hxx>
 #include <typelists.hxx>
+#include <typedecl.hxx>
 
 namespace pi::tl
 {
@@ -16,8 +16,19 @@ namespace pi::tl
                        , std::make_tuple(arguments...));
         }
 
+        auto operator ==(auto &&other) const -> bool
+        {
+            return data_ == other.data_;
+        }
+
         template <typename Type>
         [[nodiscard]] decltype(auto) constexpr get()
+        {
+            return std::get<find<Type, TypeList...>()>(data_);
+        }
+
+        template <typename Type>
+        [[nodiscard]] decltype(auto) constexpr get() const
         {
             return std::get<find<Type, TypeList...>()>(data_);
         }

@@ -97,6 +97,9 @@ namespace pi::td::internal
         using Type::Type;
         using Type::operator =;
 
+        constexpr derived_from(Type const &other) : Type(other) {}
+        constexpr derived_from(Type &&other) : Type(std::move(other)) {}
+
         template <typename FromType, typename FromTag>
         derived_from &operator =(derived_from<FromType, FromTag> &&other) noexcept
         {
