@@ -100,17 +100,20 @@ SCENARIO("Struct")
         THEN("Equality check passes against another 2D position with the same coordinates")
         {
             REQUIRE(p == Pos2D{ X{ 1 }, Y{ 2 } });
+            REQUIRE(Pos2D{ X{ 1 }, Y{ 2 } } == p);
         }
 
         THEN("Equality check passes against a non-const position with the same coordinates")
         {
             auto q = Pos2D{ X{ 1 }, Y{ 2 } };
             REQUIRE(p == q);
+            REQUIRE(q == p);
         }
 
         THEN("Equality check fails for two different positions")
         {
             REQUIRE(p != Pos2D{});
+            REQUIRE(Pos2D{} != p);
         }
     }
 }
