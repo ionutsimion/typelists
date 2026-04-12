@@ -16,6 +16,11 @@ namespace pi::tl
                        , std::make_tuple(arguments...));
         }
 
+        auto operator ==(auto &&other) -> bool
+        {
+            return data_ == other.data_;
+        }
+
         auto operator ==(auto &&other) const -> bool
         {
             return data_ == other.data_;
