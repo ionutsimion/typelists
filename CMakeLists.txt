@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.23)
 
 project(
         PiTypeLists
-        VERSION 0.1.0
+        VERSION 0.1.1
         DESCRIPTION "Enhances the use of variadic templates"
         LANGUAGES CXX
 )
@@ -17,12 +17,12 @@ FetchContent_MakeAvailable(Catch2)
 list(APPEND CMAKE_MODULE_PATH "${Catch2_SOURCE_DIR}/contrib")
 
 add_library(PiTypeLists INTERFACE include/typedecl.hxx include/typelists.hxx include/struct.hxx
-        internal/tl_matching_strategy.hxx internal/tl_constants.hxx internal/tl_find.hxx internal/tl_count.hxx
-        internal/tl_get.hxx internal/td_typedecl_base.hxx)
+        include/internal/tl_matching_strategy.hxx include/internal/tl_constants.hxx include/internal/tl_find.hxx
+        include/internal/tl_count.hxx include/internal/tl_get.hxx include/internal/td_typedecl_base.hxx)
 add_library(pi::TypeLists ALIAS PiTypeLists)
 
-target_include_directories(PiTypeLists INTERFACE include internal)
-target_compile_features(PiTypeLists INTERFACE cxx_std_20)
+target_include_directories(PiTypeLists INTERFACE include)
+target_compile_features(PiTypeLists INTERFACE cxx_std_23)
 
 if (MSVC)
     target_compile_options(PiTypeLists INTERFACE /W4 /WX /sdl)
@@ -34,7 +34,7 @@ add_executable(tests tests/main.cxx tests/main.cxx tests/find.cxx tests/count.cx
         tests/struct.cxx)
 target_link_libraries(tests PRIVATE PiTypeLists Catch2::Catch2)
 target_include_directories(tests PRIVATE ${Catch2_INCLUDE_DIRS} tests)
-target_compile_features(tests PRIVATE cxx_std_20)
+target_compile_features(tests PRIVATE cxx_std_23)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     if (MSVC)

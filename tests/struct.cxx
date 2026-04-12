@@ -83,6 +83,36 @@ SCENARIO("Struct")
             REQUIRE_THAT(c.get<alpha_t>(), WithinAbs(0.0, pi::epsilon<double>));
         }
     }
+
+    GIVEN("A fixed integer 2D position")
+    {
+        using X = pi::td::typedecl<int, AUTO_TAG>;
+        using Y = pi::td::typedecl<int, AUTO_TAG>;
+        using Pos2D = struct_t<X, Y>;
+
+        auto const p = Pos2D{ X{ 1 }, Y{ 2 } };
+
+        THEN("Equality check passes against itself")
+        {
+            REQUIRE(p == p);
+        }
+
+        THEN("Equality check passes against another 2D position with the same coordinates")
+        {
+            REQUIRE(p == Pos2D{ X{ 1 }, Y{ 2 } });
+        }
+
+        THEN("Equality check passes against a non-const position with the same coordinates")
+        {
+            auto q = Pos2D{ X{ 1 }, Y{ 2 } };
+            REQUIRE(p == q);
+        }
+
+        THEN("Equality check fails for two different positions")
+        {
+            REQUIRE(p != Pos2D{});
+        }
+    }
 }
 
 SCENARIO("Struct with constants")

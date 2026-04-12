@@ -1,10 +1,8 @@
 #ifndef PITYPELISTS_TL_GET_HXX
 #define PITYPELISTS_TL_GET_HXX
 
-#include <tuple>
-
-#include <tl_count.hxx>
-#include <tl_find.hxx>
+#include <internal/tl_count.hxx>
+#include <internal/tl_find.hxx>
 
 namespace pi::tl::internal
 {
