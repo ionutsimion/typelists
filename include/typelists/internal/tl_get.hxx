@@ -1,6 +1,8 @@
 #ifndef PITYPELISTS_TL_GET_HXX
 #define PITYPELISTS_TL_GET_HXX
 
+#include <stdexcept>
+
 #include <typelists/internal/tl_count.hxx>
 #include <typelists/internal/tl_find.hxx>
 
