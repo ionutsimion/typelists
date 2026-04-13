@@ -53,7 +53,7 @@ namespace pi::tl
         : std::tuple<TypeList...>
     {
         template <typename ...Arguments>
-        explicit struct_with_consts_t(Arguments &&...arguments)
+        explicit constexpr struct_with_consts_t(Arguments &&...arguments)
             : std::tuple<TypeList...>(std::forward<Arguments>(arguments)...)
         {
         }
