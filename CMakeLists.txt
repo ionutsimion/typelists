@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.23)
 
 project(
         PiTypeLists
-        VERSION 0.1.3
+        VERSION 0.1.4
         DESCRIPTION "Enhances the use of variadic templates"
         LANGUAGES CXX
 )
