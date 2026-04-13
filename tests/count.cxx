@@ -1,6 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include <typelists.hxx>
+#include <typelists/typelists.hxx>
 using namespace pi::tl;
 
 SCENARIO("count with empty type list") // NOLINT(misc-use-anonymous-namespace)

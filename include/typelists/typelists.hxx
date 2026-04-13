@@ -1,9 +1,9 @@
 #ifndef PITYPELISTS_TYPELISTS_HXX
 #define PITYPELISTS_TYPELISTS_HXX
 
-#include <internal/tl_get.hxx>
-#include <internal/tl_find.hxx>
-#include <internal/tl_matching_strategy.hxx>
+#include <typelists/internal/tl_get.hxx>
+#include <typelists/internal/tl_find.hxx>
+#include <typelists/internal/tl_matching_strategy.hxx>
 
 namespace pi::tl
 {

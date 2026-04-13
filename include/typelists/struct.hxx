@@ -1,8 +1,8 @@
 #ifndef PITYPELISTS_STRUCT_HXX
 #define PITYPELISTS_STRUCT_HXX
 
-#include <typelists.hxx>
-#include <typedecl.hxx>
+#include <typelists/typelists.hxx>
+#include <typelists/typedecl.hxx>
 
 namespace pi::tl
 {
@@ -16,7 +16,7 @@ namespace pi::tl
                        , std::make_tuple(arguments...));
         }
 
-        auto operator ==(auto &&other) -> bool
+        auto constexpr operator ==(auto &&other) -> bool
         {
             return data_ == other.data_;
         }

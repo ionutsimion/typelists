@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.23)
 
 project(
         PiTypeLists
-        VERSION 0.1.1
+        VERSION 0.1.3
         DESCRIPTION "Enhances the use of variadic templates"
         LANGUAGES CXX
 )
@@ -16,9 +16,9 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Catch2)
 list(APPEND CMAKE_MODULE_PATH "${Catch2_SOURCE_DIR}/contrib")
 
-add_library(PiTypeLists INTERFACE include/typedecl.hxx include/typelists.hxx include/struct.hxx
-        include/internal/tl_matching_strategy.hxx include/internal/tl_constants.hxx include/internal/tl_find.hxx
-        include/internal/tl_count.hxx include/internal/tl_get.hxx include/internal/td_typedecl_base.hxx)
+add_library(PiTypeLists INTERFACE include/typelists/typedecl.hxx include/typelists/typelists.hxx include/typelists/struct.hxx
+        include/typelists/internal/tl_matching_strategy.hxx include/typelists/internal/tl_constants.hxx include/typelists/internal/tl_find.hxx
+        include/typelists/internal/tl_count.hxx include/typelists/internal/tl_get.hxx include/typelists/internal/td_typedecl_base.hxx)
 add_library(pi::TypeLists ALIAS PiTypeLists)
 
 target_include_directories(PiTypeLists INTERFACE include)
@@ -52,4 +52,5 @@ endif()
 
 include(CTest)
 include(Catch)
+
 catch_discover_tests(tests)

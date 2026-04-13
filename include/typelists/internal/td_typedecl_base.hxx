@@ -68,6 +68,9 @@ namespace pi::td::internal
             return *this;
         }
 
+        wrapper_for_fundamental &operator =(wrapper_for_fundamental &&other) noexcept = default;
+        wrapper_for_fundamental &operator =(wrapper_for_fundamental const &other) noexcept = default;
+
         wrapper_for_fundamental &operator =(Type &&value) noexcept
         {
             data_ = std::forward<Type>(value);
