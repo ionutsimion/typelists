@@ -3,10 +3,10 @@
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 using namespace Catch::Matchers;
 
-#include <typelists.hxx>
+#include <typelists/typelists.hxx>
 using namespace pi::tl;
 
-#include <typedecl.hxx>
+#include <typelists/typedecl.hxx>
 using namespace pi::td;
 
 #include <toolbox.hxx>

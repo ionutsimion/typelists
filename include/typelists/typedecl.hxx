@@ -5,7 +5,7 @@
 #define TAG(UniqueID) MAKE_TAG(UniqueID)
 #define MAKE_TAG(ID) struct TAG_ ## ID
 
-#include <internal/td_typedecl_base.hxx>
+#include <typelists/internal/td_typedecl_base.hxx>
 
 namespace pi::td
 {

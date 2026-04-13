@@ -3,8 +3,8 @@
 
 #include <type_traits>
 
-#include <internal/tl_constants.hxx>
-#include <internal/tl_count.hxx>
+#include <typelists/internal/tl_constants.hxx>
+#include <typelists/internal/tl_count.hxx>
 
 namespace pi::tl::internal
 {

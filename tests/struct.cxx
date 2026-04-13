@@ -3,7 +3,7 @@
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 using namespace Catch::Matchers;
 
-#include <struct.hxx>
+#include <typelists/struct.hxx>
 using namespace pi::tl;
 
 #include <toolbox.hxx>
@@ -90,7 +90,9 @@ SCENARIO("Struct")
         using Y = pi::td::typedecl<int, AUTO_TAG>;
         using Pos2D = struct_t<X, Y>;
 
-        auto const p = Pos2D{ X{ 1 }, Y{ 2 } };
+        auto const x = X{ 1 };
+        auto const y = Y{ 2 };
+        auto const p = Pos2D{ x, y };
 
         THEN("Equality check passes against itself")
         {
@@ -99,8 +101,8 @@ SCENARIO("Struct")
 
         THEN("Equality check passes against another 2D position with the same coordinates")
         {
-            REQUIRE(p == Pos2D{ X{ 1 }, Y{ 2 } });
-            REQUIRE(Pos2D{ X{ 1 }, Y{ 2 } } == p);
+            REQUIRE(p == Pos2D{ x, Y{ 2 } });
+            REQUIRE(Pos2D{ X{ 1 }, y } == p);
         }
 
         THEN("Equality check passes against a non-const position with the same coordinates")
