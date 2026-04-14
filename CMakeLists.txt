@@ -7,14 +7,10 @@ project(
         LANGUAGES CXX
 )
 
-include(FetchContent)
-FetchContent_Declare(
-        Catch2
-        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-        GIT_TAG v3.4.0
-)
-FetchContent_MakeAvailable(Catch2)
-list(APPEND CMAKE_MODULE_PATH "${Catch2_SOURCE_DIR}/contrib")
+include(cmake/options.cmake)
+include(cmake/dependencies.cmake)
+
+enable_testing()
 
 add_library(PiTypeLists INTERFACE include/typelists/typedecl.hxx include/typelists/typelists.hxx include/typelists/struct.hxx
         include/typelists/internal/tl_matching_strategy.hxx include/typelists/internal/tl_constants.hxx include/typelists/internal/tl_find.hxx
@@ -30,27 +26,6 @@ else()
     target_compile_options(PiTypeLists INTERFACE -Werror -Wall -Wextra -pedantic)
 endif()
 
-add_executable(tests tests/main.cxx tests/main.cxx tests/find.cxx tests/count.cxx tests/get.cxx tests/sandbox_npc.cxx tests/toolbox.hxx tests/sandbox_player.cxx tests/typedecl_fundamental.cxx tests/typedecl_final_class.cxx tests/typedecl_class.cxx
-        tests/struct.cxx)
-target_link_libraries(tests PRIVATE PiTypeLists Catch2::Catch2)
-target_include_directories(tests PRIVATE ${Catch2_INCLUDE_DIRS} tests)
-target_compile_features(tests PRIVATE cxx_std_23)
-
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    if (MSVC)
-        target_compile_options(tests PRIVATE /Od /MDd)
-    else()
-        target_compile_options(tests PRIVATE -O0 -g)
-    endif()
-else()
-    if (MSVC)
-        target_compile_options(tests PRIVATE /O2 /MD)
-    else()
-        target_compile_options(tests PRIVATE -O3)
-    endif()
+if(TYPELISTS_BUILD_TESTS)
+    add_subdirectory(tests)
 endif()
-
-include(CTest)
-include(Catch)
-
-catch_discover_tests(tests)
